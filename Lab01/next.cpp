@@ -2,21 +2,29 @@
 
 int main(void)
 {
-    int n, j, max=0, k;
-    int *send;
+    int  n, i, j, k=0, max=0;
+    int* send, *temp;
 
     std::cin >> n;
-    send = (int*)malloc(sizeof(int)*n);
-    for (int i=0; i<n; i++)
+    send = (int*)malloc(sizeof(int)*(n+1));
+    temp = (int*)malloc(sizeof(int)*(n+1));
+    for (i=1; i<=n; i++)
     {
         std::cin >> send[i];
+        temp[i] = 0;
     }
-    for (int i=0; i<n; i++)
+    for (i=1; i<=n; i++)
     {
+        k = 0;
         j = i;
+        if (temp[i] == 1)
+        {
+            continue;
+        }
         do
         {
-            j = send[j-1];
+            temp[j] = 1;
+            j = send[j];
             k++;
         }
         while (j != i);
@@ -25,7 +33,7 @@ int main(void)
             max = k;
         }
     }
-    std::cout << max+1 << "\n";
+    std::cout << max << "\n";
 
     return 0;
 }
