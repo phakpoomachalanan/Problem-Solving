@@ -1,5 +1,5 @@
 #include <iostream>
- 
+
 int main(void)
 {
     int bowls[301]={0};
