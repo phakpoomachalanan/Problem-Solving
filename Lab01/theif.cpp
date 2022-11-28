@@ -6,7 +6,5 @@ int main(void)
 
     std::cin >> n >> k >> t;
 
+    return 0;
 }
-// case 1 NKT % 2 == 0
-// case 2 NK % 2 == 0 && T % 2 == 1
-// case 3 NH
