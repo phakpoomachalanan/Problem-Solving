@@ -1,5 +1,5 @@
 #include <iostream>
-
+ 
 int main(void)
 {
     int a, b, c, d;
