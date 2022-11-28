@@ -14,20 +14,12 @@ int main(void)
     for (int i=0; i<n; i++)
     {
         j = i;
-        /*do
+        do
         {
             j = send[j-1];
             k++;
         }
-        while (j != i);*/
-        for (k=0; k<n; k++)
-        {
-            j = send[j-1];
-            if (j == i)
-            {
-                break;
-            }
-        }
+        while (j != i);
         if (k > max)
         {
             max = k;
