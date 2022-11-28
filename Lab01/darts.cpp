@@ -1,5 +1,5 @@
 #include <iostream>
-
+ 
 int main(void)
 {
     int times, x, y, score=0;
