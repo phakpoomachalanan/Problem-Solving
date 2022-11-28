@@ -1,5 +1,5 @@
 #include <iostream>
- 
+
 int main(void)
 {
     int num, times, sum=0;
