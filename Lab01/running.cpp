@@ -3,7 +3,7 @@
 int main(void)
 {
     int     i, k=0;
-    double  candidate, round, min;
+    double  candidate, round, min, out;
     double* period;
     
     std::cin >> candidate >> round;
@@ -19,21 +19,15 @@ int main(void)
             min = period[i];
         }
     }
-    if (round != 1)
+    out = min*round/(round-1);
+    for (i=0; i<candidate; i++)
     {
-        for (i=0; i<candidate; i++)
+        if (period[i] < out)
         {
-            if (min*round/period[i] > round-1)
-            {
-                k++;
-            }
+            k++;
         }
-        std::cout << k << "\n";
     }
-    else
-    {
-        std::cout << candidate << "\n";
-    }
+    std::cout << k << "\n";
 
     return 0;
 }
