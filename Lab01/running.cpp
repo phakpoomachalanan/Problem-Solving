@@ -2,13 +2,12 @@
 
 int main(void)
 {
-    int    i, k=0;
-    float  candidate, round, min;
-    float* period;
-    float  out;
+    int     i, k=0;
+    double  candidate, round, min;
+    double* period;
     
     std::cin >> candidate >> round;
-    period = (float*)malloc(sizeof(float)*candidate);
+    period = (double*)malloc(sizeof(double)*candidate);
 
     std::cin >> period[0];
     min = period[0];
@@ -20,15 +19,21 @@ int main(void)
             min = period[i];
         }
     }
-    out = min*round/(round-1);
-    for (i=0; i<candidate; i++)
+    if (round != 1)
     {
-        if (period[i] < out)
+        for (i=0; i<candidate; i++)
         {
-            k++;
+            if (min*round/period[i] > round-1)
+            {
+                k++;
+            }
         }
+        std::cout << k << "\n";
     }
-    std::cout << k << "\n";
+    else
+    {
+        std::cout << candidate << "\n";
+    }
 
     return 0;
 }
