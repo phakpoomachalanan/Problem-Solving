@@ -32,7 +32,7 @@ int main(void)
                 {
                     it = data.begin();
                     advance(it, temp-1);
-                    data.remove(*it);
+                    data.erase(it);
                 }
                 break;
         }
