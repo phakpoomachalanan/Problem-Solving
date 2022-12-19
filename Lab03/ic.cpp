@@ -24,10 +24,13 @@ int main(void)
         }
         else if (command == "lr")
         {
-            it = data.begin();
-            temp = *it;
-            data.remove(*it);
-            data.push_back(temp);
+            if (data.size() != 0)
+            {
+                it = data.begin();
+                temp = *it;
+                data.remove(*it);
+                data.push_back(temp);   
+            }
         }
         else if (command == "ri")
         {
@@ -36,17 +39,15 @@ int main(void)
         }
         else if (command == "rr")
         {
-            it = data.begin();
-            advance(it , data.size()-1);
-            temp = *it;
-            data.remove(*it);
-            data.push_front(temp);
+            if (data.size() != 0)
+            {
+                it = data.begin();
+                advance(it , data.size()-1);
+                temp = *it;
+                data.remove(*it);
+                data.push_front(temp);            
+            }
         }
-        for (it=data.begin(); it!=data.end(); it++)
-        {
-            cout << *it << ' ';
-        }
-        cout << '\n';
     }
     for (it=data.begin(); it!=data.end(); it++)
     {
