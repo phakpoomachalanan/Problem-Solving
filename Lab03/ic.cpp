@@ -28,8 +28,9 @@ int main(void)
             {
                 it = data.begin();
                 temp = *it;
-                data.remove(*it);
-                data.push_back(temp);   
+                
+                data.push_back(temp);
+                data.erase(it);
             }
         }
         else if (command == "ri")
@@ -44,15 +45,11 @@ int main(void)
                 it = data.begin();
                 advance(it , data.size()-1);
                 temp = *it;
-                data.remove(*it);
-                data.push_front(temp);            
+                
+                data.push_front(temp);  
+                data.erase(it);          
             }
         }
-        for (it=data.begin(); it!=data.end(); it++)
-        {
-            cout << *it << ' ';
-        }
-        cout << '\n';
     }
     for (it=data.begin(); it!=data.end(); it++)
     {
