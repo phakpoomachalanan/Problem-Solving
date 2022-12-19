@@ -48,6 +48,11 @@ int main(void)
                 data.push_front(temp);            
             }
         }
+        for (it=data.begin(); it!=data.end(); it++)
+        {
+            cout << *it << ' ';
+        }
+        cout << '\n';
     }
     for (it=data.begin(); it!=data.end(); it++)
     {
