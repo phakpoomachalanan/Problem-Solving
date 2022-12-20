@@ -74,21 +74,10 @@ int main(void)
         }
         tail_ptr->next = ptr;
         lace[head-1] = NULL;
-        for (j=0; j<n; j++)
-        {
-            if (size(lace[j]) != 0)
-            {
-                for (ptr=lace[j]; ptr!=NULL; ptr=ptr->next)
-                {
-                    cout << ptr->num << ' ';
-                }
-            }
-        }
-        cout << '\n';
     }
     for (i=0; i<n; i++)
     {
-        if (size(lace[i]) != 0)
+        if (lace[i] != NULL)
         {
             for (ptr=lace[i]; ptr!=NULL; ptr=ptr->next)
             {
