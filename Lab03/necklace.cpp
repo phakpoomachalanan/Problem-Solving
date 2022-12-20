@@ -4,7 +4,7 @@
 using namespace std;
 
 int main(void)
-{
+{ 
     int n, i, head, tail, j, flag=0;
     int head_line, tail_line;
     list<int> lace[300001];
