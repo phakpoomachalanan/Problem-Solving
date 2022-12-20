@@ -3,71 +3,106 @@
 
 using namespace std;
 
+typedef struct node
+{
+    int     num;
+    struct node* next;
+}
+list_t;
+
+int size(list_t* list);
+
 int main(void)
-{ 
+{
     int n, i, head, tail, j, flag=0;
-    int head_line, tail_line;
-    list<int> lace[300001];
-    list<int>::iterator itr, head_itr, tail_itr;
+    list_t*  ptr;
+    list_t*  head_ptr;
+    list_t*  tail_ptr;
+    list_t** lace;
 
     cin >> n;
+    lace = (list_t**)malloc(sizeof(list_t)*n);
 
     for (i=0; i<n; i++)
     {
-        lace[i].push_back(i+1);
+        lace[i] = (list_t*)malloc(sizeof(list_t));
+        lace[i]->num = i+1;
+        lace[i]->next = NULL;
     }
     for (i=0; i<n-1; i++)
     {
         cin >> head >> tail;
         for (j=0; j<n; j++)
         {
-            for (itr=lace[j].begin(); itr!=lace[j].end(); itr++)
+            for (ptr=lace[j]; ptr!=NULL; ptr=ptr->next)
             {
-                if (*itr == tail)
+                if (ptr->num == tail)
                 {
                     flag = 1;
-                    tail_itr = itr;
+                    tail_ptr = ptr;
                     break;
                 }
             }
-            if (tail_itr != lace[j].end() && flag == 1)
+            if (tail_ptr != NULL && flag == 1)
             {
-                tail_line = j;
                 flag = 0;
                 break;
             }
         }
         for (j=0; j<n; j++)
         {
-            for (itr=lace[j].begin(); itr!=lace[j].end(); itr++)
+            for (ptr=lace[j]; ptr!=NULL; ptr=ptr->next)
             {
-                if (*itr == head)
+                if (ptr->num == head)
                 {
                     flag = 1;
-                    head_itr = itr;
+                    head_ptr = ptr;
                     break;
                 }
             }
-            if (head_itr != lace[j].end() && flag == 1)
+            if (head_ptr != NULL && flag == 1)
             {
-                head_line = j;
                 flag = 0;
                 break;
             }
         }
-        lace[tail_line].splice(++tail_itr, lace[head_line]);
+        ptr = tail_ptr->next;
+        tail_ptr->next = head_ptr;
+        while (tail_ptr->next != NULL)
+        {
+            tail_ptr = tail_ptr->next;
+        }
+        tail_ptr->next = ptr;
+        lace[head-1] = NULL;
+        for (j=0; j<n; j++)
+        {
+            if (size(lace[j]) != 0)
+            {
+                for (ptr=lace[j]; ptr!=NULL; ptr=ptr->next)
+                {
+                    cout << ptr->num << ' ';
+                }
+            }
+        }
+        cout << '\n';
     }
     for (i=0; i<n; i++)
     {
-        if (lace[i].size() != 0)
+        if (size(lace[i]) != 0)
         {
-            for (itr=lace[i].begin(); itr!=lace[i].end(); itr++)
+            for (ptr=lace[i]; ptr!=NULL; ptr=ptr->next)
             {
-                cout << *itr << ' ';
+                cout << ptr->num << ' ';
             }
+            break;
         }
     }
     cout << '\n';
 
     return 0;
+}
+
+int size(list_t* list)
+{
+    return list == NULL ? 0 : 1 + size(list->next);
 }
