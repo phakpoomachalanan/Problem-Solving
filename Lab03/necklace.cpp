@@ -10,8 +10,6 @@ typedef struct node
 }
 list_t;
 
-int size(list_t* list);
-
 int main(void)
 {
     int n, i, head, tail, j, flag=0;
@@ -89,9 +87,4 @@ int main(void)
     cout << '\n';
 
     return 0;
-}
-
-int size(list_t* list)
-{
-    return list == NULL ? 0 : 1 + size(list->next);
 }
