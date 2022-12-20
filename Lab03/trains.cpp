@@ -8,7 +8,7 @@ int main(void)
     int  n, k, j;
     char command;
     list<int>::iterator it;
-    list<int> data[100000];
+    list<int> data[100001];
 
     cin >> n;
 
@@ -23,16 +23,17 @@ int main(void)
 
             case 'M':
                 data[j].splice(data[j].end(), data[k]);
+                data[k].clear();
                 break;
         }
     }
-    for (int i=0; i<n; i++)
+    for (int i=0; i<100001; i++)
     {
-        for (it=data[i].begin(); it!=data[i].end(); it++)
+        if (data[i].size() != 0)
         {
-            if (*it != 0)
+            for (it=data[i].begin(); it!=data[i].end(); it++)
             {
-                cout << *it << '\n';
+                    cout << *it << '\n';
             }
         }
     }
