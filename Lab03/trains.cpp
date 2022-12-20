@@ -23,13 +23,12 @@ int main(void)
 
             case 'M':
                 data[j].splice(data[j].end(), data[k]);
-                data[k].clear();
                 break;
         }
     }
     for (int i=0; i<100001; i++)
     {
-        if (data[i].size() != 0)
+        if (data[i].empty() == 0)
         {
             for (it=data[i].begin(); it!=data[i].end(); it++)
             {
