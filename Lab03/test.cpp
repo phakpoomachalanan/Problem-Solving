@@ -11,6 +11,14 @@ typedef struct node
 }
 list_t;
 
+typedef struct temp
+{
+    int head;
+    list_t* line;
+    struct temp* next;
+}
+temp_t;
+
 int main(void)
 {
     int  n, m, i, j, temp, times;
@@ -73,13 +81,7 @@ int main(void)
             case 'C':
                 cin >> m;
                 flag = 0;
-                /*for (ptr=rptr->next; ptr!=NULL;)
-                {
-                    lptr = ptr;
-                    ptr=ptr->next;
-                    free(lptr);
-                }*/
-                rptr->next = NULL;
+                //rptr->next = NULL;
 
                 for (j=0; j<n; j++)
                 {
@@ -139,17 +141,6 @@ int main(void)
     {
         cout << ptr->num << '\n';
     }
-
-    /*for (i=0; i<n; i++)
-    {
-        cout << head[i] << ' ';
-    }
-    cout << '\n';
-    for (i=0; i<n; i++)
-    {
-        cout << tail[i] << ' ';
-    }
-    cout << '\n';*/
 
     return 0;
 }

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <list>
 
 using namespace std;
 
@@ -13,109 +14,133 @@ list_t;
 int main(void)
 {
     int  n, m, i, j, temp, times;
-    int  last=1;
+    int  end, flag, last=0;
+    int* head;
+    int* tail;
+    int* path;
     char command;
-    list_t*  ptr; 
-    list_t*  lptr;
-    list_t*  dptr;
-    list_t** head;
-    list_t** tail;
-    list_t** fchain;
-    list_t** bchain;
+    list_t* ptr;
+    list_t* rptr;
+    list_t* lptr = NULL;
+    list_t* chain;
 
     cin >> n >> times;
-    fchain = (list_t**)malloc(sizeof(list_t*)*n);
+    head = (int*)malloc(sizeof(int)*n);
+    tail = (int*)malloc(sizeof(int)*n);
+    path = (int*)malloc(sizeof(int)*times);
+    chain = (list_t*)malloc(sizeof(list_t));
 
     for (i=0; i<n; i++)
     {
+        head[i] = last + 1;
         cin >> m;
-        fchain[i] = (list_t*)malloc(sizeof(list_t)*m);
-        ptr = fchain[i];
-        lptr = NULL;
-        for (j=0; j<m; j++, last++)
+        tail[i] = last + m;
+        last += m;
+        if (i == 0)
         {
-            ptr->next = (list_t*)malloc(sizeof(list_t)*m);
-            ptr->num = last;
-            ptr->back = lptr;
-            lptr = ptr;
-            ptr = ptr->next;
+            ptr = chain;
+            for (j=0; j<m; j++)
+            {
+                ptr->next = (list_t*)malloc(sizeof(list_t));
+                ptr->back = lptr;
+                ptr->num = j+1;
+                lptr = ptr;
+                ptr = ptr->next;
+            }
+            free(ptr);
+            lptr->next = NULL;
         }
-        lptr->next = NULL;
-        free(ptr);
+    }
 
-        bchain[i] = (list_t*)malloc(sizeof(list_t)*m);
-        ptr = bchain[i];
-        lptr = NULL;
-        for (j=0; j<m; j++, last++)
-        {
-            ptr->next = (list_t*)malloc(sizeof(list_t)*m);
-            ptr->num = last;
-            ptr->back = lptr;
-            lptr = ptr;
-            ptr = ptr->next;
-        }
-        lptr->next = NULL;
-        free(ptr);
-    }
-    head = (list_t**)malloc(sizeof(list_t*)*last+1);
-    tail = (list_t**)malloc(sizeof(list_t*)*last+1);
-    for (i=0, j=0; i<n; i++)
-    {
-        head[j+1] = fchain[i];
-        for (ptr=fchain[i]; ptr->next!=NULL; ptr=ptr->next, j++) {}
-        //head[++j] = ptr;
-    }
-    ptr = fchain[0];
+    rptr = chain;
 
     for (i=0; i<times; i++)
     {
         cin >> command;
+        //cout << rptr->num << "  back: " << rptr->back << "  now: " << rptr << "  next: " << rptr->next << '\n';
         switch(command)
         {
             case 'F':
-                if (ptr->next != NULL)
+                if (rptr->next != NULL)
                 {
-                    ptr = ptr->next;
+                    rptr = rptr->next;
                 }
                 break;
             case 'B':
-                if (ptr->back != NULL)
+                if (rptr->back != NULL)
                 {
-                    ptr = ptr->back;
+                    rptr = rptr->back;
                 }
                 break;
             case 'C':
-                cin >> n;
-                for (dptr=ptr->next; dptr!=NULL; dptr=lptr)
+                cin >> m;
+                flag = 0;
+                rptr->next = NULL;
+
+                for (j=0; j<n; j++)
                 {
-                    lptr = lptr->next;
-                    free(dptr);
-                }
-                ptr->next = head[n];
-                ptr = ptr->next;
-                if (ptr->next == NULL)
-                {
-                    for (;ptr!=NULL; ptr=ptr->back)
+                    if (tail[j] == m)
                     {
-                         
+                        flag = 1;
+                        end = head[j];
+                        break;
                     }
                 }
+                if (flag == 0)
+                {
+                    for (j=0; j<n; j++)
+                    {
+                        if (head[j] == m)
+                        {
+                            flag = 2;
+                            end = tail[j];
+                            break;
+                        }
+                    }                    
+                }
+
+                ptr = rptr;
+                lptr = rptr;
+                if (flag == 1)
+                {
+                    for (j=m; j>=end; j--)
+                    {
+                        ptr->next = (list_t*)malloc(sizeof(list_t));
+                        ptr = ptr->next;
+                        ptr->back = lptr;
+                        ptr->num = j;
+                        lptr = ptr;
+                    }
+                    free(ptr);
+                }
+                else if (flag == 2)
+                {
+                    for (j=m; j<=end; j++)
+                    {
+                        ptr->next = (list_t*)malloc(sizeof(list_t));
+                        ptr = ptr->next;
+                        ptr->back = lptr;
+                        ptr->num = j;
+                        lptr = ptr;
+                    }
+                    free(ptr);
+                }
+                rptr = rptr->next;
                 break;
         }
+        path[i] = rptr->num;
+        //cout << rptr->num << "  back: " << rptr->back << "  now: " << rptr << "  next: " << rptr->next << '\n';
     }
 
-    for (i=0; i<n; i++)
+    /*for (ptr=chain; ptr!=rptr; ptr=ptr->next)
     {
-        for (ptr=fchain[i]; ptr!=NULL; ptr=ptr->next)
-        {
-            cout << ptr->num << ' ';
-        }
-        cout << '\n';
-    }
-    /*for (i=0; i<last; i++)
-    {
-        cout << i << ' ' << head[i] << '\n';
+        cout << ptr->num << '\n';
     }*/
+
+    for (i=0; i<times; i++)
+    {
+        cout << path[i] << '\n';
+    }
 
     return 0;
 }
