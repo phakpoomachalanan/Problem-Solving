@@ -68,25 +68,19 @@ void create_graph()
     int dx, dy;
     int diff;
 
-    //cout << r_square << '\n';
     for (i=0; i<=n; i++)
     {
         deg[i] = 0;
     }
     for (i=0; i<=n; i++)
     {
-        //rsqr1 = coor[i].first*coor[i].first + coor[i].second*coor[i].second;
         for (j=i+1; j<=n; j++)
         {
             dx = coor[j].first - coor[i].first;
             dy = coor[j].second - coor[i].second;
-            //rsqr2 = coor[j].first*coor[j].first + coor[j].second*coor[j].second;
-            //diff = rsqr2 > rsqr1 ? rsqr2-rsqr1 : rsqr1-rsqr2;
-            //cout << dx << ' ' << rsqr2 << ' ' << diff << '\n';
             diff = dx*dx + dy*dy;
             if (diff <= r_square)
             {
-                //cout << coor[i].first << ' ' << coor[i].second << "---" << coor[j].first << ' ' << coor[j].second <<'\n';
                 adj[i].push_back(j);
                 adj[j].push_back(i);
                 deg[i]++;
@@ -110,7 +104,7 @@ int bfs(int s)
     vector<int> current_layer;
     vector<int> next_layer;
     int u, v, i;
-    int count=0;
+    int count = 0;
 
     current_layer.push_back(s);
     visited[s] = true;
