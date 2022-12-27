@@ -20,6 +20,7 @@ int  bfs(int s);
 int main(void)
 {
     int times = 0;
+    int min = 1002;
 
     get_input();
     init();
@@ -30,13 +31,20 @@ int main(void)
         if (layer[i] == -1)
         {
             times = bfs(i);
-            if (times != -1)
+            if (times != -1 && times < min)
             {
-                break;
+                min = times;
             }
         }
     }
-    cout << times << '\n';
+    if (times == 1002)
+    {
+        cout << "-1\n";
+    }
+    else 
+    {
+        cout << times << '\n';
+    }
 
     return 0;
 }
