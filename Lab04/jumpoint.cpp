@@ -3,7 +3,7 @@
 
 using namespace std;
 
-const int MAX_N = 1001;
+const int MAX_N = 1002;
 
 vector<pair<int, int> > coor;
 vector<int> adj[MAX_N];
@@ -52,10 +52,13 @@ int main(void)
 void get_input()
 {
     pair<int, int> temp;
-    int x, y;
+    int x, y, i;
     cin >> n >> r_square;
     r_square *= r_square;
 
+    temp.first = 0;
+    temp.second = 0;
+    coor.push_back(temp);
     for (int i=0; i<n; i++)
     {
         cin >> x >> y;
@@ -76,13 +79,13 @@ void create_graph()
     int dx, dy;
     int diff;
 
-    for (i=0; i<=n; i++)
+    for (i=0; i<=n+1; i++)
     {
         deg[i] = 0;
     }
-    for (i=0; i<=n; i++)
+    for (i=0; i<=n+1; i++)
     {
-        for (j=i+1; j<=n; j++)
+        for (j=i+1; j<=n+1; j++)
         {
             dx = coor[j].first - coor[i].first;
             dy = coor[j].second - coor[i].second;
@@ -100,7 +103,7 @@ void create_graph()
 
 void init()
 {
-    for (int i=0; i<n; i++)
+    for (int i=0; i<=n+1; i++)
     {
         visited[i] = false;
         layer[i] = -1;
@@ -127,9 +130,9 @@ int bfs(int s)
             for (i=0; i<deg[u]; i++)
             {
                 v = adj[u][i];
-                if (v == n)
+                if (v == n+1)
                 {
-                    return count + 1;
+                    return count;
                 }
                 if (!visited[v])
                 {
