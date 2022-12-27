@@ -3,7 +3,7 @@
 
 using namespace std;
 
-const int MAX_N = 1001;
+const int MAX_N = 10001;
 
 vector<pair<int, int> > coor;
 vector<int> adj[MAX_N];
@@ -20,7 +20,7 @@ int  bfs(int s);
 int main(void)
 {
     int times = 0;
-    int min = 1002;
+    int min = 10001;
 
     get_input();
     init();
@@ -37,7 +37,7 @@ int main(void)
             }
         }
     }
-    if (times == 1002)
+    if (times == 10001)
     {
         cout << "-1\n";
     }
