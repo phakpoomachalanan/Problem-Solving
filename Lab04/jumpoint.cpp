@@ -3,7 +3,7 @@
 
 using namespace std;
 
-const int MAX_N = 1002;
+const int MAX_N = 1001;
 
 vector<pair<int, int> > coor;
 vector<int> adj[MAX_N];
@@ -52,7 +52,7 @@ int main(void)
 void get_input()
 {
     pair<int, int> temp;
-    int x, y, i;
+    int x, y;
     cin >> n >> r_square;
     r_square *= r_square;
 
