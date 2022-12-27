@@ -3,7 +3,7 @@
 
 using namespace std;
 
-typedef struct people
+typedef struct pepo
 {
     int index;
     int perfomance;
@@ -12,66 +12,61 @@ pepo_t;
 
 int main(void)
 {
-    int n, i;
-    pepo_t* person;
-    list<int> lose;
-    list<pepo_t> candidate;
-    list<int>::iterator litr;
-    list<pepo_t>::iterator itr, nitr;
+    int n, i, j, temp;
+    int max=0, third, fourth;
+    pepo_t top[4];
+    pepo_t first, second;
+
+    for (i=0; i<4; i++)
+    {
+        top[i].perfomance = 0;
+    }
 
     cin >> n;
 
-    for (i=1; i<=4*n; i++)
+    for (i=0; i<4; i++)
     {
-        person = (pepo_t*)malloc(sizeof(pepo_t));
-        cin >> person->perfomance;
-        person->index = i;
-        candidate.push_back(*person);
-        //cout << i << ' ' << person << '\n';
-    }
-    /*for (itr=candidate.begin(); itr!=candidate.end(); itr++)
-    {
-        cout << itr->index << ' ' << itr->perfomance << '\n';
-    }*/
-    while (candidate.size()>4)
-    {
-        itr = candidate.begin();
-        for (i=0; i<candidate.size()/2; i++)
+        for (j=1; j<=n; j++)
         {
-            nitr = itr;
-            advance(nitr, 1);
-            cout << i << ' ' << itr->index << ' ' << nitr->index << '\n';
-            if (itr->perfomance > nitr->perfomance)
+            cin >> temp;
+            if (temp > top[i].perfomance)
             {
-                cout << nitr->index << '\n';
-                lose.push_back(nitr->index);
-                //candidate.push_back(*nitr);
-                //candidate.erase(nitr);
-            }
-            else
-            {
-                cout << itr->index << '\n';
-                lose.push_back(itr->index);
-                //candidate.push_back(*itr);
-                //candidate.erase(itr);
-            }
-            advance(itr, 2);
-        }
-        
-        for (itr=candidate.begin(), litr=lose.begin(); itr!=candidate.end(); itr++)
-        {
-            if (itr->index == *litr)
-            {
-                candidate.erase(itr);
-                advance(litr, 1);
+                top[i].perfomance = temp;
+                top[i].index = i*n + j;
             }
         }
-        lose.clear();
     }
-    for (itr=candidate.begin(); itr!=candidate.end(); itr++)
-    {
-        cout << itr->index << ' ' << itr->perfomance << '\n';
-    }        
 
+    if (top[0].perfomance > top[1].perfomance)
+    {
+        first = top[0];
+        third = top[1].index;
+    }
+    else
+    {
+        first = top[1];
+        third = top[0].index;
+    }
+    if (top[2].perfomance > top[3].perfomance)
+    {
+        second = top[2];
+        fourth = top[3].index;
+    }
+    else
+    {
+        second = top[3];
+        fourth = top[2].index;
+    }
+    if (first.perfomance > second.perfomance)
+    {
+        cout << first.index << '\n' << second.index << '\n';
+    }
+    else
+    {
+        cout << second.index << '\n' << first.index << '\n';
+    }
+    cout << third << '\n' << fourth << '\n';
+
+    
     return 0;
 }
