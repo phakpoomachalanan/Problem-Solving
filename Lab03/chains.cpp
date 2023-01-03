@@ -23,11 +23,16 @@ int main(void)
     list_t* rptr;
     list_t* lptr = NULL;
     list_t* chain;
+    list_t* tmp;
+    list<list_t*> cut; 
+    list<list_t*>::iterator itr;
+    list<list_t*>::iterator litr;
 
     cin >> n >> times;
     head = (int*)malloc(sizeof(int)*n);
     tail = (int*)malloc(sizeof(int)*n);
     path = (int*)malloc(sizeof(int)*times);
+    tmp = (list_t*)malloc(sizeof(list_t));
     chain = (list_t*)malloc(sizeof(list_t));
 
     for (i=0; i<n; i++)
@@ -75,13 +80,62 @@ int main(void)
             case 'C':
                 cin >> m;
                 flag = 0;
-                rptr->next = NULL;
+                if (rptr->next != NULL)
+                {
+                    cut.push_back(rptr->next);
+                    /*tmp = (list_t*)malloc(sizeof(list_t));
+                    ptr=rptr->next;
+                    while (ptr->next != NULL)
+                    {
+                        cout << ptr->num;
+                        ptr=ptr->next;
+                    }
+                    for (; ptr!=NULL; ptr=ptr->back)
+                    {
+                        tmp->next = (list_t*)malloc(sizeof(list_t));
+                        tmp->num = ptr->num;
+                        tmp->back = ptr->next;
+                        tmp = tmp->next;
+                    }*/
+                }
+                /*ptr = tmp->back;
+                free(ptr->next);
+                tmp->back->next = NULL;
+                rptr->next = NULL;*/
+
+                for (itr=cut.begin(), j=0; itr!=cut.end(); itr++, j++)
+                {
+                    ptr = *itr;
+                    if (ptr->num == m)
+                    {
+                        if (j%2 == 0)
+                        {
+                            litr = itr;
+                            advance(itr, 1);
+                        }
+                        else if (j%2 == 1)
+                        {
+                            litr = itr;
+                            advance(itr, -1);
+                        }
+                        cut.erase(litr);
+                        cut.erase(itr);
+                        rptr->next = ptr;
+                        flag = 1;
+                        break;
+                    }
+                }
+                if (flag == 1)
+                {
+                    rptr = rptr->next;
+                    break;
+                }
 
                 for (j=0; j<n; j++)
                 {
                     if (tail[j] == m)
                     {
-                        flag = 1;
+                        flag = 2;
                         end = head[j];
                         break;
                     }
@@ -92,7 +146,7 @@ int main(void)
                     {
                         if (head[j] == m)
                         {
-                            flag = 2;
+                            flag = 3;
                             end = tail[j];
                             break;
                         }
@@ -101,7 +155,7 @@ int main(void)
 
                 ptr = rptr;
                 lptr = rptr;
-                if (flag == 1)
+                if (flag == 2)
                 {
                     for (j=m; j>=end; j--)
                     {
@@ -113,7 +167,7 @@ int main(void)
                     }
                     free(ptr);
                 }
-                else if (flag == 2)
+                else if (flag == 3)
                 {
                     for (j=m; j<=end; j++)
                     {
