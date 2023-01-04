@@ -1,15 +1,11 @@
 #include <iostream>
 #include <vector>
 
-
-#include <unistd.h>
-
 using namespace std;
 
 typedef struct node
 {
     int num;
-    int type;
     struct node* next;
     struct node* back;
 }
@@ -33,7 +29,6 @@ int main(void)
     vector<list_t*>::iterator itr;
 
     cin >> n >> times;
-    //path = (int*)malloc(sizeof(int)*n);
     path = new int[n];
 
     for (i=0; i<n; i++)
@@ -41,16 +36,13 @@ int main(void)
         cin >> m;
 
         last_ptr = NULL;
-        //list_temp = (list_t*)malloc(sizeof(list_t));
         list_temp = new list_t;
         ptr = list_temp;
         for (j=last; j<last+m; j++)
         {
             ptr->back = last_ptr;
             ptr->num = j;
-            //ptr->type = 1;
             last_ptr = ptr;
-            //ptr->next = (list_t*)malloc(sizeof(list_t));
             ptr->next = new list_t;
             ptr = ptr->next;
         }
@@ -70,63 +62,31 @@ int main(void)
     {
         cin >> command;
 
-        //cout << robot_ptr->num << ' ';
         switch(command)
         {
             case 'F':
-                //cout << "F " << robot_ptr->back << ' ' << robot_ptr << ' ' << robot_ptr->next;
-                /*if (robot_ptr->type == 1)
-                {
-                    // forward
-                    next_position = robot_ptr->next;
-                }
-                else if (robot_ptr->type == 2)
-                {
-                    // reverse
-                    next_position = robot_ptr->back;
-                }*/
                 if (robot_ptr->next != NULL)
                 {
                     robot_ptr = robot_ptr->next;
-                    //cout << "F " << robot_ptr->back->num;
                 }
                 break;
-
             case 'B':
-                //cout << "B " << robot_ptr->back << ' ' << robot_ptr << ' ' << robot_ptr->next;
-                /*if (robot_ptr->type == 1)
-                {
-                    // forward
-                    next_position = robot_ptr->back;
-                }
-                else if (robot_ptr->type == 2)
-                {
-                    // reverese
-                    next_position = robot_ptr->next;
-                }*/
                 if (robot_ptr->back != NULL)
                 {
                     robot_ptr = robot_ptr->back;
                 }
                 break;
-
             case 'C':
-                cin >> m;// m--;
+                cin >> m;
 
                 next_position = robot_ptr->next;
                 if (next_position != NULL)
                 {
                     head.push_back(next_position);
                     next_position->back = NULL;
-                    //cout << "head " << next_position->num << " yeet\n";
-                    for (ptr=next_position; ptr->next!=NULL; ptr=ptr->next)
-                    {
-                        //usleep(1000000);
-                        //cout << ptr->num << ' ' << ptr->type << '\n';
-                    }
+                    for (ptr=next_position; ptr->next!=NULL; ptr=ptr->next) {}
                     tail.push_back(ptr);
                     ptr->next = NULL;
-                    //cout << "tail " << ptr->num << " yeet\n";
                 }
                 robot_ptr->next = NULL;
 
@@ -134,17 +94,14 @@ int main(void)
 
                 for (j=0; j<head.size(); j++)
                 {
-                    //cout << m << ' ' << head[j]->num << ' ' << tail[j]->num << '\n';
                     if (head[j]->num == m)
                     {
-                        //cout << m << " head\n";
                         flag = 1;
                         k = j;
                         break;
                     }
                     else if (tail[j]->num == m)
                     {
-                        //cout << m << " tail\n";
                         flag = 2;
                         k = j;
                         break;
@@ -158,78 +115,29 @@ int main(void)
                 }
                 else if (flag == 2)
                 {
-                    type = 2;
-                    //tail[k]->next = robot_ptr;
-
                     for (ptr=tail[k]; ptr!=NULL; ptr=ptr->next)
                     {
-                        //usleep(1000000);
-                        //cout << "--" << ptr->num << '\n';
                         last_ptr = ptr->back;
                         ptr->back = ptr->next;
                         ptr->next = last_ptr;
-                        //ptr->type = type;
                     }
                     robot_ptr->next = tail[k];
                     tail[k]->back = robot_ptr;
                 }
-                //cout << *next(head.begin(), k-1);
-                //cout << *next(tail.begin(), k-1);
                 itr = head.begin();
                 advance(itr, j);
                 head.erase(itr);
                 itr = tail.begin();
                 advance(itr, j);
                 tail.erase(itr);
-                //tail.erase(next(tail.begin(), k-1));
-                
+        
                 robot_ptr = robot_ptr->next;
-                //cout << "C " << robot_ptr->back << ' ' << robot_ptr << ' ' << robot_ptr->next;
-
                 break;
         }
         path[i] = robot_ptr->num;
-        std::cout << path[i] << "\n";
-        /*cout << command << ' ';
-        for (ptr=robot_ptr; ptr!=NULL; ptr=ptr->next)
-        {
-            cout << ptr->num << ' ';
-        }
-        cout << '\n';*/
+        cout << path[i] << "\n";
     }
 
-    /*for (i=0; i<head.size(); i++)
-    {
-        for (ptr=head[i]; ptr!=NULL; ptr=ptr->next)
-        {
-            cout << ptr->num << ' ';
-        }
-        cout << '\n';
-    }
-
-    for (i=0; i<tail.size(); i++)
-    {
-        for (ptr=tail[i]; ptr!=NULL; ptr=ptr->back)
-        {
-            cout << ptr->num << ' ';
-        }
-        cout << '\n';
-    }*/
-
-    /*for (ptr=chain; ptr!=NULL;)
-    {
-        cout << ptr->num << ' ';
-        if (type == 1)
-        {
-            ptr = ptr->next;
-        }
-        else if (type == 2)
-        {
-            ptr = ptr->back;
-        }
-    }
-    cout << '\n';
-*/
     for (i=0; i<times; i++)
     {
         cout << path[i] << '\n';
