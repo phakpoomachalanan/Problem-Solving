@@ -3,4 +3,4 @@
 *.out
 template.cpp
 test.cpp
-input.in
+*.in
