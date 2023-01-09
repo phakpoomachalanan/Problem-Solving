@@ -4,3 +4,4 @@
 template.cpp
 test.cpp
 *.in
+*.*
