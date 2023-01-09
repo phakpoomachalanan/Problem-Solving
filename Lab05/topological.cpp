@@ -109,7 +109,7 @@ bool bfs(int s)
                 }
                 else
                 {
-                    if (layer[u] > layer[v])
+                    if (u > v)
                     {
                         return false;
                     }
