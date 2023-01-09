@@ -4,14 +4,12 @@
 using namespace std;
 
 const int MAX_N = 100001;
-const int MAX_M = 200001;
-
-int n, m;
 
 vector<int> adj[MAX_N];
-int deg[MAX_N];
-int layer[MAX_N];
 bool visited[MAX_N];
+int layer[MAX_N];
+int deg[MAX_N];
+int n, m;
 
 void get_input();
 void init();
@@ -21,7 +19,7 @@ int main(void)
 {
     int  p;
     int  i, j, k;
-    bool result[3];
+    bool result[4];
 
     cin >> p;
 
@@ -44,13 +42,16 @@ int main(void)
 
 void get_input()
 {
-    int u, v, i;
-    cin >> n >> m;
-    for (i=0; i<n; i++)
+    int i;
+    int u, v;
+
+    cin >> m >> n;
+
+    for (i=0; i<m; i++)
     {
         deg[i] = 0;
     }
-    for (i=0; i<m; i++)
+    for (i=0; i<n; i++)
     {
         cin >> u >> v;
         u--;
@@ -61,7 +62,6 @@ void get_input()
         deg[v]++;
     }
 }
-
 
 void init()
 {
@@ -97,9 +97,12 @@ bool bfs(int s)
                     visited[v] = true;
                     layer[v] = layer[u] + 1;
                 }
-                else if (layer[v] == layer[u])
+                else
                 {
-                    return false;
+                    if (layer[v] == layer[u])
+                    {
+                        return false;
+                    }
                 }
             }
         }
