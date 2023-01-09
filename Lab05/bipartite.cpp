@@ -19,8 +19,7 @@ int main(void)
 {
     int  p;
     int  i, j, k;
-    bool result[4];
-
+    
     cin >> p;
 
     for (i=0; i<p; i++)
