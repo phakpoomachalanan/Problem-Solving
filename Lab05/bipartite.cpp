@@ -24,8 +24,8 @@ int main(void)
 
     for (i=0; i<p; i++)
     {
-        get_input();
         init();
+        get_input();
         if (bfs(0))
         {
             cout << "yes\n";
@@ -46,10 +46,7 @@ void get_input()
 
     cin >> m >> n;
 
-    for (i=0; i<m; i++)
-    {
-        deg[i] = 0;
-    }
+    init();
     for (i=0; i<n; i++)
     {
         cin >> u >> v;
@@ -66,6 +63,7 @@ void init()
 {
     for (int i=0; i<m; i++)
     {
+        deg[i] = 0;
         adj[i].clear();
         visited[i] = false;
         layer[i] = -1;
