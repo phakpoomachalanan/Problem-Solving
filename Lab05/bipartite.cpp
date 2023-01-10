@@ -24,7 +24,6 @@ int main(void)
 
     for (i=0; i<p; i++)
     {
-        init();
         get_input();
         if (bfs(0))
         {
