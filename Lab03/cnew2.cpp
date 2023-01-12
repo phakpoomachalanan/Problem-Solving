@@ -15,6 +15,11 @@ list_t;
 list_t* rptr;
 list_t* chain[100001];
 
+void go_forward();
+void go_backward();
+void go_next();
+void go_back();
+
 int main(void)
 {
     int  times, n, m, l;
@@ -54,16 +59,57 @@ int main(void)
         cin >> command;
         switch (command)
         {
-
+            case 'F':
+                go_forward();
+                break;
+            case 'B':
+                go_backward();
+            case 'C':
+                cin >> n;
+                path[i] = rptr->num;
+                break;
         }
     }
 
-    for (i=0, j=0; i<l; i++)
+    return 0;
+}
+
+void go_forward()
+{
+    if (rptr->reverse)
     {
-        for (nptr=chain[j]; nptr!=NULL; nptr=nptr->next, j++)
-        {
-            cout << nptr->num << ' ';
-        }
-        cout << '\n';
+        go_back();
+    }
+    else
+    {
+        go_next();
+    }
+}
+
+void go_backward()
+{
+    if (rptr->reverse)
+    {
+        go_next();
+    }
+    else
+    {
+        go_back();
+    }
+}
+
+void go_next()
+{
+    if (rptr->next != NULL)
+    {
+        rptr = rptr->next;
+    }
+}
+
+void go_back()
+{
+    if (rptr->back != NULL)
+    {
+        rptr = rptr->back;
     }
 }
