@@ -27,8 +27,8 @@ int main(void)
     int  last=0;
     int* path;
     char command;
-    list_t* lptr = NULL;
-    list_t* nptr;
+    list_t* lptr;
+    list_t* pptr;
 
     cin >> l >> times;
     path = new int[n];
@@ -38,22 +38,25 @@ int main(void)
         cin >> m;
 
         chain[last] = new list_t;
-        nptr = chain[last];
+        lptr = NULL;
         for (j=last; j<last+m; j++)
         {
-            nptr->back = lptr;
-            nptr->next = new list_t;
-            nptr->num = j;
-            nptr->reverse = false;
-            lptr = nptr;
-            nptr = nptr->next;
+            chain[j]->back = lptr;
+            chain[j+1] = new list_t;
+            chain[j]->next = chain[j+1];
+            chain[j]->num = j;
+            chain[j]->reverse = false;
+            lptr = chain[j];
+            //cout << chain[j]->num << ' ' << chain[j] << ' ';
         }
-        free(nptr);
+        //cout << "\n----" << lptr->num << ' ' << nptr->num << '\n';
+        free(chain[j+1]);
         lptr->next = NULL;
 
         last += m;
     }
 
+    rptr = chain[0];
     for (i=0; i<times; i++)
     {
         cin >> command;
@@ -64,11 +67,88 @@ int main(void)
                 break;
             case 'B':
                 go_backward();
+                break;
             case 'C':
-                cin >> n;
-                path[i] = rptr->num;
+                cin >> n; n--;
+                // cout << n << " " << chain[n] << endl;
+                
+                pptr = rptr;
+
+                if (pptr->reverse)
+                {
+                    if (pptr->back != NULL)
+                    {
+                        // cout << "1.0   " << pptr->next->num << endl;
+                        pptr->back->next = NULL;
+                        pptr->back = NULL;
+                    }                    
+                }
+                else
+                {
+                    if (pptr->next != NULL)
+                    {
+                        // cout << "1.0   " << pptr->next->num << endl;
+                        pptr->next->back = NULL;
+                        pptr->next = NULL;
+                    }
+                }
+
+                
+                // cout << "1.1   " << chain[n]->num << endl;
+                if (chain[n]->next == NULL)
+                {
+                    // tail case
+                    // cout << "1.1   " << chain[n]->next << endl;
+                    if (chain[n]->back != NULL)
+                    {
+                        // reverse all chain[n]'s chain
+                        for (pptr=chain[n]; pptr!=NULL; pptr=pptr->back)
+                        {
+                            // cout << "2.0  " << pptr->num << endl;
+                            pptr->reverse = true;
+                        }
+                        chain[n]->next = rptr;
+                    }
+                    else
+                    {
+                        // cout << "2.1  " << pptr->num << endl;
+                        pptr->reverse = false;
+                    }
+                }
+                else
+                {
+                    for (pptr=chain[n]; pptr!=NULL; pptr=pptr->next)
+                    {
+                        // cout << "2.2  " << pptr->num << endl;
+                        pptr->reverse = false;
+                    }
+                    chain[n]->back = rptr;
+                }
+                rptr->next = chain[n];
+                
+                go_forward();
                 break;
         }
+
+        for (j=0; j<last;)
+        {
+            for (pptr=chain[j]; pptr!=NULL; j++)
+            {
+                cout << pptr->num+1 << " ";
+                if (pptr->reverse)
+                {
+                    pptr = pptr->back;
+                }
+                else
+                {
+                    pptr = pptr->next;
+                }
+            }
+            cout << endl;
+        }
+
+        path[i] = rptr->num;
+        cout << path[i]+1 << endl;
     }
 
     return 0;
