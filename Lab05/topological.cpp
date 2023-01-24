@@ -10,7 +10,8 @@ vector<int> adj[MAX_N];
 bool visited[MAX_N];
 vector<pair<int, int> > output;
 int layer[MAX_N];
-int deg[MAX_N];
+int in_deg[MAX_N];
+int out_deg[MAX_N];
 int n, m;
 
 void get_input();
@@ -59,7 +60,8 @@ void get_input()
 
     for (i=0; i<m; i++)
     {
-        deg[i] = 0;
+        in_deg[i] = 0;
+        out_deg[i] = 0;
     }
     for (i=0; i<n; i++)
     {
@@ -67,7 +69,8 @@ void get_input()
         u--;
         v--;
         adj[u].push_back(v);
-        deg[u]++;
+        out_deg[u]++;
+        in_deg[v]++;
     }
 }
 
@@ -97,7 +100,7 @@ bool bfs(int s)
         for (vector<int>::iterator itr=current_layer.begin(); itr!=current_layer.end(); itr++)
         {
             u = *itr;
-            for (i=0; i<deg[u]; i++)
+            for (i=0; i<out_deg[u]; i++)
             {
                 v = adj[u][i];
                 if (!visited[v])
