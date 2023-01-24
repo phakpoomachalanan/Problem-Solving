@@ -51,7 +51,7 @@ void find_exit(int y, int x, int last_top)
     {
         return;
     }
-    if (last_top <= map[y][x]-jump)
+    if (last_top < map[y][x]-jump)
     {
         return;
     }
