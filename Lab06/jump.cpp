@@ -55,7 +55,7 @@ void find_exit(int y, int x, int last_top)
     {
         return;
     }
-    if (x==n-1 && y==n-1)
+    if (y==n-1 && x==n-1)
     {
         can = true;
         return;
@@ -63,10 +63,10 @@ void find_exit(int y, int x, int last_top)
 
     visited[y][x] = true;
 
-    find_exit(y+1, x, last_top);
-    find_exit(y-1, x, last_top);
-    find_exit(y, x+1, last_top);
-    find_exit(y, x-1, last_top);
+    find_exit(y+1, x, map[y][x]);
+    find_exit(y-1, x, map[y][x]);
+    find_exit(y, x+1, map[y][x]);
+    find_exit(y, x-1, map[y][x]);
 
     return;
 }
