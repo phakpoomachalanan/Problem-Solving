@@ -7,7 +7,6 @@ const int MAX_N = 100001;
 
 vector<int> adj[MAX_N];
 bool visited[MAX_N];
-int layer[MAX_N];
 int deg[MAX_N];
 int n, m, h;
 
@@ -65,7 +64,6 @@ void init()
     for (int i=0; i<m; i++)
     {
         visited[i] = false;
-        layer[i] = -1;
     }
 }
 
@@ -79,7 +77,6 @@ int bfs(int s)
 
     current_layer.push_back(s);
     visited[s] = true;
-    layer[s] = 0;
 
     while (distance != h)
     {
@@ -93,7 +90,6 @@ int bfs(int s)
                 {
                     next_layer.push_back(v);
                     visited[v] = true;
-                    layer[v] = layer[u] + 1;
                     count++;
                 }
             }
