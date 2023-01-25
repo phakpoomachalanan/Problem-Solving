@@ -33,7 +33,6 @@ int main(void)
         }
     }
 
-
     cout << max << '\n';
 
     return 0;
