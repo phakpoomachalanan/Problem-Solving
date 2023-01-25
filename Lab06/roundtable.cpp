@@ -2,58 +2,37 @@
 
 using namespace std;
 
+int line[200001];
+int rott[200001] = {0};
+
 int main(void)
 {
-    int size, last, i, now, first;
-    int count = 1;
+    int size, i;
+    int count;
     int max  = 1;
-    bool ordered = false;
-    bool plused = false;
 
     cin >> size;
-    cin >> first;
-    last = first;
 
-    for (i=1; i<size; i++)
+    for (i=0; i<size; i++)
     {
-        cin >> now;
-
-        if (last+1 == now || (last+1)%size == now)
-        {
-            if (ordered)
-            {
-                count++;
-            }
-            else
-            {
-                count = 2;
-                ordered = true;
-            }
-            if (i == 1)
-            {
-                plused = true;
-            }
-        }
-        else
-        {
-            ordered = false;
-        }
-        if (count > max)
-        {
-            max = count;
-        }
-
-        last = now;
+        cin >> line[i];
+        line[i]--;
     }
-    if (!plused && last+1 == first)
+    for (i=0; i<size; i++)
     {
-        count++;
-
+        line[i] -= i;
+        line[i] = line[i]>0 ? line[i] : size+line[i];
+        rott[line[i]] += 1;
+    }
+    for (i=0; i<size; i++)
+    {
+        count = rott[i];
         if (count > max)
         {
             max = count;
         }
     }
+
 
     cout << max << '\n';
 
