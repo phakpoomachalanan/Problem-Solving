@@ -141,7 +141,6 @@ void traversal(int y, int x, int dir, int tick)
 
     if (y==des_y && x==des_x)
     {
-        // cout << tick << '\n';
         can = true;
         if (layer[y][x] > tick)
         {
