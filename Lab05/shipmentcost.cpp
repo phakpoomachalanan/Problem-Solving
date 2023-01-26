@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <list>
 
 using namespace std;
 
@@ -58,6 +59,7 @@ void get_input()
     for (i=0; i<m; i++)
     {
         deg[i] = 0;
+        layer[i] = -1;
     }
     for (i=0; i<n; i++)
     {
@@ -87,41 +89,30 @@ void init()
     for (int i=0; i<m; i++)
     {
         visited[i] = false;
-        layer[i] = -1;
     }
 }
 
 void bfs(int s)
 {
-    vector<int> current_layer;
-    vector<int> next_layer;
-    int u, v, i;
+    list<int> Q;
 
-    current_layer.push_back(s);
+    Q.push_back(s);
     visited[s] = true;
     layer[s] = 0;
-
-    while (true)
+    
+    while(!Q.empty())
     {
-        for (vector<int>::iterator itr=current_layer.begin(); itr!=current_layer.end(); itr++)
+        int u = Q.front();
+        Q.pop_front();
+        for(int d=0; d<deg[u]; d++)
         {
-            u = *itr;
-            for (i=0; i<deg[u]; i++)
+            int v = adj[u][d];
+            if(!visited[v])
             {
-                v = adj[u][i];
-                if (!visited[v])
-                {
-                    next_layer.push_back(v);
-                    visited[v] = true;
-                    layer[v] = layer[u] + 1;
-                }
+                Q.push_back(v);
+                visited[v] = true;
+                layer[v] = layer[u] + 1;
             }
         }
-        if (next_layer.size() == 0)
-        {
-            break;
-        }
-        current_layer = next_layer;
-        next_layer.clear();
     }
 }
