@@ -4,3 +4,6 @@
 template.cpp
 test.cpp
 *.in
+*.ou
+*.out
+*.txt
