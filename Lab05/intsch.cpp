@@ -20,10 +20,10 @@ int main(void)
     }
 
     sort(paired.begin(), paired.end());
-    last_f = paired[i].first;
-    last_s = paired[i].second;
+    last_f = 0;
+    last_s = 0;
 
-    for (i=1; i<n; i++)
+    for (i=0; i<n; i++)
     {
         first = paired[i].first;
         second = paired[i].second;
@@ -36,7 +36,7 @@ int main(void)
         }
     }
 
-    cout << count << '\n';
+    cout << count-1 << '\n';
 
     return 0;
 }
