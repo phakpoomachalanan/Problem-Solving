@@ -6,11 +6,9 @@ using namespace std;
 const int MAX_N = 100001;
 
 vector<int> adj[MAX_N];
-bool isFactory[50001] = {false};
-bool isSupply[50001] = {false};
 vector<int> factory;
 vector<int> supply;
-int dis[50001] = {0xffff};
+int dis[50001];
 bool visited[MAX_N];
 int layer[MAX_N];
 int deg[MAX_N];
@@ -18,21 +16,34 @@ int n, m, s, t;
 
 void get_input();
 void init();
-void bfs(int start);
+void bfs(int s);
 
 int main(void)
 {
     int i, j, temp;
 
     get_input();
-    init();
 
     for (i=0; i<s; i++)
     {
+        init();
         bfs(supply[i]);
+
+        for (j=0; j<t; j++)
+        {
+            temp = factory[j];
+
+            if (dis[j] > layer[temp])
+            {
+                dis[j] = layer[temp];
+            }
+        }
     }
 
-    cout << count << '\n';
+    for (i=0; i<t; i++)
+    {
+        cout << dis[i] << '\n';
+    }
 
     return 0;
 }
@@ -60,15 +71,14 @@ void get_input()
     }
     for (i=0; i<s; i++)
     {
-        cin >> u;
-        isSupply[u] = true;
+        cin >> u; u--;
         supply.push_back(u);
     }
     for (i=0; i<t; i++)
     {
-        cin >> u;
-        isFactory[u] = true;
+        cin >> u; u--;
         factory.push_back(u);
+        dis[i] = 0xffff;
     }
 }
 
@@ -81,15 +91,15 @@ void init()
     }
 }
 
-void bfs(int start)
+void bfs(int s)
 {
     vector<int> current_layer;
     vector<int> next_layer;
     int u, v, i;
 
     current_layer.push_back(s);
-    visited[start] = true;
-    layer[start] = 0;
+    visited[s] = true;
+    layer[s] = 0;
 
     while (true)
     {
