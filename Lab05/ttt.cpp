@@ -17,9 +17,6 @@ bool bfs(int s);
 
 int main(void)
 {
-    int  p;
-    int  i, j, k;
-
     get_input();
     bfs(0);
 
