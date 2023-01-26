@@ -38,15 +38,6 @@ int main(void)
         }
     }
 
-    // cout << sta_x << ' ' << sta_y << ' ' << des_x << ' ' << des_y << '\n';
-    // for (i=0; i<n; i++)
-    // {
-    //     for (j=0; j<m; j++)
-    //     {
-    //         cout << map[i][j];
-    //     }
-    //     cout << '\n';
-    // }
     init();
     traversal(sta_y, sta_x, 0, 0);
     all_can = all_can ? all_can : can;
@@ -54,7 +45,6 @@ int main(void)
     {
         min = layer[des_y][des_x];
     }
-    // cout << layer[des_y][des_x] << '\n';
 
     for (i=0; i<speacial.size(); i++)
     {
@@ -64,27 +54,21 @@ int main(void)
         init();
         map[spe_y][spe_x] = '|';
         traversal(sta_y, sta_x, 0, 0);
-        // cout << layer[des_y][des_x] << '\n';
         all_can = all_can ? all_can : can;
         if (can && layer[des_y][des_x] < min)
         {
             min = layer[des_y][des_x];
-            // cout << spe_y << ' ' << spe_x << ' ' << 1 << ' ' << layer[des_y][des_x] << '\n';
         }
-        // cout << "-------------------" << layer[des_y][des_x] << '\n';
         map[spe_y][spe_x] = '*';
         
         init();
         map[spe_y][spe_x] = '_';
         traversal(sta_y, sta_x, 0, 0);
-        // cout << layer[des_y][des_x] << '\n';
         all_can = all_can ? all_can : can;
         if (can && layer[des_y][des_x] < min)
         {
             min = layer[des_y][des_x];
-            // cout << spe_y << ' ' << spe_x << ' ' << 2 << ' ' << layer[des_y][des_x] << '\n';
         }
-        // cout << "-------------------" << layer[des_y][des_x] << '\n';
         map[spe_y][spe_x] = '*';
     }
 
@@ -96,22 +80,6 @@ int main(void)
     {
         cout << -1 << '\n';
     }
-
-    // for (i=0; i<n; i++)
-    // {
-    //     for (j=0; j<m; j++)
-    //     {
-    //         if (layer[i][j] != 65535)
-    //         {
-    //             cout << layer[i][j] << ' ';
-    //         }
-    //         else
-    //         {
-    //             cout << "xxx";
-    //         }
-    //     }
-    //     cout << '\n';
-    // }
 
     return 0;
 }
@@ -136,11 +104,6 @@ void init()
 
 void traversal(int y, int x, int dir, int tick)
 {
-    // char ch;
-    // if (can)
-    // {
-    //     return;
-    // }
     if (y>n-2 || y<1 || x>m-2 || x<1)
     {
         return;
@@ -175,29 +138,7 @@ void traversal(int y, int x, int dir, int tick)
     {
         layer[y][x] = layer[y][x-1] + 1;
     }
-        
 
-    // if (spe_y == 2 && spe_x == 2)
-    // {
-        // cout << y << ' ' << x << ' ' << tick << ' ' << layer[des_y][des_x] << '\n';
-        // for (int i=0; i<n; i++)
-        // {
-        //     for (int j=0; j<m; j++)
-        //     {
-        //         if (i==y && j==x)
-        //         {
-        //             cout << 'X';
-        //         }
-        //         else
-        //         {
-        //             cout << map[i][j];
-        //         }
-        //     }
-        //     cout << '\n';
-        // }
-        // cout << '\n';
-        // cout << '\n';
-    // }
     if (y==des_y && x==des_x)
     {
         // cout << tick << '\n';
