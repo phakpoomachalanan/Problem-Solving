@@ -1,5 +1,4 @@
 #include <iostream>
-#include <vector>
 
 using namespace std;
 
@@ -7,7 +6,7 @@ int  n, m;
 bool can;
 const int MAX_N = 31;
 const int MAX_M = 31;
-int map[MAX_N][MAX_M] = {0};
+char map[MAX_N][MAX_M] = {0};
 bool visited[MAX_N][MAX_M] = {false};
 
 void find_exit(int y, int x);
@@ -15,23 +14,14 @@ void find_exit(int y, int x);
 int main(void)
 {
     int  i, j;
-    char ch;
-    string row;
-    vector<pair<int, int> > coor;
 
     cin >> n >> m;
-    getline(cin, row);
 
     for (i=0; i<n; i++)
     {
-        getline(cin, row);
         for (j=0; j<m; j++)
         {
-            ch = row[j];
-            if (ch == '.')
-            {
-                map[i][j] = 1;
-            }
+            cin >> map[i][j];
         }
     }
 
@@ -61,11 +51,11 @@ void find_exit(int y, int x)
     {
         return;
     }
-    if (map[y][x] == 0 || visited[y][x])
+    if (map[y][x] == '#' || visited[y][x])
     {
         return;
     }
-    if (y == n-2 && map[y+1][x] == 1 && map[y+1][x+1] == 1 && map[y+1][x] == 1)
+    if (y == n-2 && map[y+1][x] == '.' && map[y+1][x+1] == '.' && map[y+1][x] == '.')
     {
         can = true;
         return;
@@ -73,7 +63,7 @@ void find_exit(int y, int x)
 
     visited[y][x] = true;
     
-    if (map[y][x+1] == 1 && map[y+1][x] == 1 && map[y+1][x+1])
+    if (map[y][x+1] == '.' && map[y+1][x] == '.' && map[y+1][x+1] == '.')
     {
         find_exit(y+1, x);
         find_exit(y-1, x);
