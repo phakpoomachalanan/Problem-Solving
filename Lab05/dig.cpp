@@ -80,7 +80,7 @@ void init()
     return;
 }
 
-void pretravel(int mode)
+void pre_travel(int mode)
 {
     init();
     if (mode == 1)
@@ -91,6 +91,7 @@ void pretravel(int mode)
     {
         map[spe_y][spe_x] = '|';
     }
+
     traversal(sta_y, sta_x, 0, 0);
     all_can = all_can ? all_can : can;
     if (can && layer[des_y][des_x] < min_dot)
