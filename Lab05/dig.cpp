@@ -3,24 +3,25 @@
 
 using namespace std;
 
-int spe_y, spe_x;
 int  n, m;
-bool can, all_can=false;
-const int MAX_N = 51;
-char map[MAX_N][MAX_N] = {'\0'};
-bool visited[MAX_N][MAX_N] = {false};
-vector<pair<int, int> > speacial;
-int layer[MAX_N][MAX_N];
 int des_y, des_x;
+int sta_y, sta_x;
+int spe_y, spe_x;
+const int MAX_N = 51;
+int min_dot = 0xfffffff;
+int layer[MAX_N][MAX_N];
+bool can, all_can=false;
+char map[MAX_N][MAX_N] = {'\0'};
+vector<pair<int, int> > speacial;
+bool visited[MAX_N][MAX_N] = {false};
 
 void init();
+void pre_travel(int mode);
 void traversal(int y, int x, int dir, int tick);
 
 int main(void)
 {
-    int min = 0xfffffff;
     int i, j;
-    int sta_y, sta_x;
 
     cin >> n >> m;
     cin >> sta_y >> sta_x >> des_y >> des_x;
@@ -38,43 +39,20 @@ int main(void)
         }
     }
 
-    init();
-    traversal(sta_y, sta_x, 0, 0);
-    all_can = all_can ? all_can : can;
-    if (can && layer[des_y][des_x] < min)
-    {
-        min = layer[des_y][des_x];
-    }
+    pre_travel(0);
 
     for (i=0; i<speacial.size(); i++)
     {
         spe_y = speacial[i].first;
         spe_x = speacial[i].second;
 
-        init();
-        map[spe_y][spe_x] = '|';
-        traversal(sta_y, sta_x, 0, 0);
-        all_can = all_can ? all_can : can;
-        if (can && layer[des_y][des_x] < min)
-        {
-            min = layer[des_y][des_x];
-        }
-        map[spe_y][spe_x] = '*';
-        
-        init();
-        map[spe_y][spe_x] = '_';
-        traversal(sta_y, sta_x, 0, 0);
-        all_can = all_can ? all_can : can;
-        if (can && layer[des_y][des_x] < min)
-        {
-            min = layer[des_y][des_x];
-        }
-        map[spe_y][spe_x] = '*';
+        pre_travel(1);
+        pre_travel(2);
     }
 
     if (all_can)
     {
-        cout << min << '\n';
+        cout << min_dot-1 << '\n';
     }
     else
     {
@@ -102,8 +80,35 @@ void init()
     return;
 }
 
+void pretravel(int mode)
+{
+    init();
+    if (mode == 1)
+    {
+        map[spe_y][spe_x] = '_';
+    }
+    else if (mode == 2)
+    {
+        map[spe_y][spe_x] = '|';
+    }
+    traversal(sta_y, sta_x, 0, 0);
+    all_can = all_can ? all_can : can;
+    if (can && layer[des_y][des_x] < min_dot)
+    {
+        min_dot = layer[des_y][des_x];
+    }
+    if (mode != 0)
+    {
+        map[spe_y][spe_x] = '*';
+    }
+
+    return;
+}
+
 void traversal(int y, int x, int dir, int tick)
 {
+    int curr_layer;
+
     if (y>n-2 || y<1 || x>m-2 || x<1)
     {
         return;
@@ -118,53 +123,56 @@ void traversal(int y, int x, int dir, int tick)
     }
 
     visited[y][x] = true;
-    if (tick < layer[y][x])
+    curr_layer = layer[y][x];
+    
+    if (tick < curr_layer)
     {
-        layer[y][x] = tick + 1;
+        curr_layer = tick + 1;
     }
-    if (layer[y+1][x] <= layer[y][x])
+    if (layer[y+1][x] <= curr_layer)
     {
-        layer[y][x] = layer[y+1][x] + 1;
+        curr_layer = layer[y+1][x] + 1;
     }
-    if (layer[y-1][x] <= layer[y][x])
+    if (layer[y-1][x] <= curr_layer)
     {
-        layer[y][x] = layer[y-1][x] + 1;
+        curr_layer = layer[y-1][x] + 1;
     }
-    if (layer[y][x+1] <= layer[y][x])
+    if (layer[y][x+1] <= curr_layer)
     {
-        layer[y][x] = layer[y][x+1] + 1;
+        curr_layer = layer[y][x+1] + 1;
     }
-    if (layer[y][x-1] <= layer[y][x])
+    if (layer[y][x-1] <= curr_layer)
     {
-        layer[y][x] = layer[y][x-1] + 1;
+        curr_layer = layer[y][x-1] + 1;
     }
+    layer[y][x] = curr_layer;
 
     if (y==des_y && x==des_x)
     {
         can = true;
-        if (layer[y][x] > tick)
+        if (curr_layer > tick)
         {
-            layer[y][x] = tick;
+            curr_layer = tick;
         }
         return;
     }
     if (map[y][x]=='|' && dir==1)
     {
-        traversal(y+1, x, 1, layer[y][x]);
-        traversal(y-1, x, 1, layer[y][x]);
+        traversal(y+1, x, 1, curr_layer);
+        traversal(y-1, x, 1, curr_layer);
         return; 
     }
     if (map[y][x]=='_' && dir==2)
     {
-        traversal(y, x+1, 2, layer[y][x]);
-        traversal(y, x-1, 2, layer[y][x]);
+        traversal(y, x+1, 2, curr_layer);
+        traversal(y, x-1, 2, curr_layer);
         return; 
     }
 
-    traversal(y+1, x, 1, layer[y][x]);
-    traversal(y-1, x, 1, layer[y][x]);
-    traversal(y, x-1, 2, layer[y][x]);
-    traversal(y, x+1, 2, layer[y][x]);
+    traversal(y+1, x, 1, curr_layer);
+    traversal(y-1, x, 1, curr_layer);
+    traversal(y, x-1, 2, curr_layer);
+    traversal(y, x+1, 2, curr_layer);
 
     return;
 }
