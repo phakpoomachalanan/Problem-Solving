@@ -11,7 +11,6 @@ const int MAX_N = 51;
 int min_visa = 0xfffffff;
 bool can, all_can=false;
 int map[MAX_N][MAX_N] = {0};
-bool visited[MAX_N] = {false};
 vector<int> adj[MAX_N];
 bool visited[MAX_N];
 int layer[MAX_N];
