@@ -8,12 +8,11 @@ const int MAX_N = 100001;
 
 vector<int> adj[MAX_N];
 vector<int> factory;
-vector<int> supply;
-int dis[50001];
 bool visited[MAX_N];
 int layer[MAX_N];
 int deg[MAX_N];
 int n, m, s, t;
+list<int> Q;
 
 void get_input();
 void init();
@@ -24,26 +23,11 @@ int main(void)
     int i, j, temp;
 
     get_input();
-
-    for (i=0; i<s; i++)
-    {
-        init();
-        bfs(supply[i]);
-
-        for (j=0; j<t; j++)
-        {
-            temp = factory[j];
-
-            if (dis[j] > layer[temp])
-            {
-                dis[j] = layer[temp];
-            }
-        }
-    }
+    bfs(Q.front());
 
     for (i=0; i<t; i++)
     {
-        cout << dis[i] << '\n';
+        cout << layer[factory[i]] << '\n';
     }
 
     return 0;
@@ -56,11 +40,8 @@ void get_input()
 
     cin >> m >> n >> s >> t;
 
-    for (i=0; i<m; i++)
-    {
-        deg[i] = 0;
-        layer[i] = -1;
-    }
+    init();
+
     for (i=0; i<n; i++)
     {
         cin >> u >> v;
@@ -74,13 +55,14 @@ void get_input()
     for (i=0; i<s; i++)
     {
         cin >> u; u--;
-        supply.push_back(u);
+        Q.push_back(u);
+        visited[u] = true;
+        layer[u] = 0;
     }
     for (i=0; i<t; i++)
     {
         cin >> u; u--;
         factory.push_back(u);
-        dis[i] = 0xffff;
     }
 }
 
@@ -88,18 +70,14 @@ void init()
 {
     for (int i=0; i<m; i++)
     {
+        deg[i] = 0;
         visited[i] = false;
+        layer[i] = -1;
     }
 }
 
 void bfs(int s)
-{
-    list<int> Q;
-
-    Q.push_back(s);
-    visited[s] = true;
-    layer[s] = 0;
-    
+{   
     while(!Q.empty())
     {
         int u = Q.front();
