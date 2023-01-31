@@ -1,131 +1,110 @@
 #include <iostream>
 #include <vector>
-#include <algorithm>
 
 using namespace std;
 
 const int MAX_N = 100001;
 
-vector<int> adj[MAX_N];
-bool visited[MAX_N];
-vector<pair<int, int> > output;
-int layer[MAX_N];
+int n, m;
 int in_deg[MAX_N];
 int out_deg[MAX_N];
-int n, m;
+bool can;
+bool visited[MAX_N];
+vector<int> output;
+vector<int> adj[MAX_N];
 
-void get_input();
 void init();
-bool bfs(int s);
+void read_input();
+void topo_order();
 
-int main(void)
+int main()
 {
-    int  i;
-    bool flag = true;
-    vector<pair<int, int> >::iterator itr;
+    read_input();
+    topo_order();
 
-    get_input();
-    init();
-
-    for (int i=0; i<m; i++)
+    if (can)
     {
-        if (layer[i] == -1)
+        for (auto res : output)
         {
-            if (!bfs(i))
-            {
-                cout << "no\n";
-                flag = false;
-                break;
-            }
+            cout << res + 1 << '\n';
         }
     }
-    if (flag)
+    else
     {
-        sort(output.begin(), output.end());
-        for (itr=output.begin(); itr!=output.end(); itr++)
-        {
-            cout << itr->second+1 << '\n';
-        }
-    }
-
-    return 0;
-}
-
-void get_input()
-{
-    int i;
-    int u, v;
-
-    cin >> m >> n;
-
-    for (i=0; i<m; i++)
-    {
-        in_deg[i] = 0;
-        out_deg[i] = 0;
-    }
-    for (i=0; i<n; i++)
-    {
-        cin >> u >> v;
-        u--;
-        v--;
-        adj[u].push_back(v);
-        out_deg[u]++;
-        in_deg[v]++;
+        cout << "no\n";
     }
 }
 
 void init()
 {
-    for (int i=0; i<m; i++)
+    int i;
+
+    for (i=0; i<n; i++)
     {
+        in_deg[i] = 0;
+        out_deg[i] = 0;
         visited[i] = false;
-        layer[i] = -1;
+    }
+
+    can = true;
+}
+
+void read_input()
+{
+    int i, u, v;
+
+    cin >> n >> m;
+
+    init();
+
+    for (i=0; i<m; i++)
+    {
+        cin >> u >> v;
+        u--;
+        v--;
+        adj[u].push_back(v);
+        in_deg[v]++;
+        out_deg[u]++;
     }
 }
 
-bool bfs(int s)
+void topo_order()
 {
-    vector<int> current_layer;
-    vector<int> next_layer;
-    int u, v, i;
+    vector<int> s;
+    int i, u, v;
 
-    current_layer.push_back(s);
-    visited[s] = true;
-    layer[s] = 0;
-
-    output.push_back(make_pair(0, s));
-
-    while (true)
+    for (i=0; i<n; i++)
     {
-        for (vector<int>::iterator itr=current_layer.begin(); itr!=current_layer.end(); itr++)
+        if (in_deg[i] == 0)
         {
-            u = *itr;
-            for (i=0; i<out_deg[u]; i++)
-            {
-                v = adj[u][i];
-                if (!visited[v])
-                {
-                    next_layer.push_back(v);
-                    visited[v] = true;
-                    layer[v] = layer[u] + 1;
-                    output.push_back(make_pair(layer[v], v));
-                }
-                else
-                {
-                    if (u > v)
-                    {
-                        return false;
-                    }
-                }
-            }
+            s.push_back(i);
         }
-        if (next_layer.size() == 0)
-        {
-            break;
-        }
-        current_layer = next_layer;
-        next_layer.clear();
     }
 
-    return true;
+    while (!s.empty())
+    {
+        u = s.back();
+        s.pop_back();
+        visited[u] = 1;
+        output.push_back(u);
+
+        for (i=0; i<out_deg[u]; i++)
+        {
+            v = adj[u][i];
+            in_deg[v]--;
+            if (in_deg[v] == 0)
+            {
+                s.push_back(v);
+            }
+        }
+    }
+
+    for (i=0; i<n; i++)
+    {
+        if (!visited[i])
+        {
+            can = false;
+            break;
+        }
+    }
 }
