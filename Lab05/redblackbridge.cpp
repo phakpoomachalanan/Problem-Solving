@@ -110,7 +110,6 @@ void bfs(int start, int stop)
                     layer[v] = layer[u] + 1;
                     path_color[v] = color_v;
                 }
-                // cout << u+1 << ' ' << v+1 << " --- " << layer[u] << ' ' << layer[v] << ' ' << path_color[v] << endl; 
                 if (v == stop)
                 {
                     can = true;
