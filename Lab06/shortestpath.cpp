@@ -1,105 +1,96 @@
 #include <iostream>
 #include <vector>
+#include <queue>
 
 using namespace std;
 
 const int MAX_N = 100001;
-
-vector<int> adj[MAX_N];
-vector<int> wei[MAX_N];
-bool visited[MAX_N];
-int weight[MAX_N];
-int deg[MAX_N];
 int n, m;
+int cost[MAX_N];
+bool visited[MAX_N];
+vector<pair<int, int> > adj[MAX_N];
 
-void get_input();
 void init();
-void bfs(int s);
+void get_input();
+void dijkstra(int start, int end);
 
-int main(void)
+int main()
 {
-    int count = 0;
-
     get_input();
-    init();
-    
-    for (int i=0; i<m; i++)
-    {
-        if (weight[i] == -1)
-        {
-            bfs(i);
-            count++;
-        }
-    }
+    dijkstra(0, n-1);
 
-    cout << count << '\n';
+    cout << cost[n-1] << '\n';
 
     return 0;
 }
 
+void init()
+{
+    for (int i=0; i<n; i++) 
+    {
+        cost[i] = 0xfffffff;
+        visited[i] = false;
+    }
+
+    return;
+}
+
 void get_input()
 {
-    int i;
-    int u, v, w;
+    int i, u, v, w;
 
-    cin >> m >> n;
+    cin >> n >> m;
+    init();
 
     for (i=0; i<m; i++)
     {
-        deg[i] = 0;
-    }
-    for (i=0; i<n; i++)
-    {
         cin >> u >> v >> w;
-        u--;
-        v--;
-        adj[u].push_back(v);
-        adj[v].push_back(u);
-        deg[u]++;
-        deg[v]++;
+        u--; v--;
+        adj[u].push_back(make_pair(v, w));
+        adj[v].push_back(make_pair(u, w));
     }
+
+    return;
 }
 
-void init()
+void dijkstra(int start, int end)
 {
-    for (int i=0; i<m; i++)
+    int i;
+    int u, v, w;
+    priority_queue <pair<int, int>, vector<pair<int, int> >, greater<pair<int, int> > > pq;
+    
+    cost[start] = 0;
+    pq.push(make_pair(0, start));
+
+    while (!pq.empty())
     {
-        visited[i] = false;
-        weight[i] = -1;
-    }
-}
-
-void bfs(int s)
-{
-    vector<int> current_layer;
-    vector<int> next_layer;
-    int u, v, i;
-
-    current_layer.push_back(s);
-    visited[s] = true;
-    weight[s] = 0;
-
-    while (true)
-    {
-        for (vector<int>::iterator itr=current_layer.begin(); itr!=current_layer.end(); itr++)
+        u = pq.top().second;
+        pq.pop();
+        
+        if (visited[u])
         {
-            u = *itr;
-            for (i=0; i<deg[u]; i++)
-            {
-                v = adj[u][i];
-                if (!visited[v])
-                {
-                    next_layer.push_back(v);
-                    visited[v] = true;
-                    weight[v] = weight[u] + 1;
-                }
-            }
+            continue;
         }
-        if (next_layer.size() == 0)
+        
+        visited[u] = true;
+        
+        if (u == end) 
         {
             break;
         }
-        current_layer = next_layer;
-        next_layer.clear();
+        
+        for (i=0; i<adj[u].size(); i++)
+        {
+            v = adj[u][i].first;
+            w = adj[u][i].second;
+
+            if (cost[u]+w < cost[v])
+            {
+                cost[v] = cost[u] + w; 
+                pq.push(make_pair(cost[v], v));
+            }
+        }
     }
+
+    return;
 }
