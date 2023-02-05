@@ -1,82 +1,118 @@
 #include <iostream>
+#include <vector>
+#include <queue>
 
 using namespace std;
 
-int  destination;
+const int MAX_N = 100001;
+int n, m;
 bool can;
-const int MAX_N = 21;
-bool visited[MAX_N][MAX_N] = {false};
+int cost[MAX_N];
+bool visited[MAX_N];
+int tollway_used[MAX_N];
+vector<int> tollway[MAX_N];
+vector<pair<int, int> > adj[MAX_N];
 
 void init();
-void find_exit(int y, int x, bool tollway_used);
+void get_input();
+void dijkstra(int start, int end);
 
-int main(void)
+int main()
 {
-    int i, j, route;
-    int sta_y, sta_x;
+    get_input();
+    dijkstra(0, n-1);
 
-    cin >> destination >> route;
-
-    for (i=0; i<route; i++)
-    {
-        
-    }
-
-    init();
-    find_exit(sta_y-1, sta_x-1, false);
-
-    if (can)
-    {
-        cout << "yes\n";
-    }
-    else
-    {
-        cout << "-1\n";
-    }
+    cout << cost[n-1] << '\n';
 
     return 0;
 }
 
 void init()
 {
-    int i, j;
-
     can = false;
-    for (i=0; i<destination; i++)
+    for (int i=0; i<n; i++) 
     {
-        for (j=0; j<destination; j++)
-        {
-            visited[i][j] = false;
-        }
+        cost[i] = 0xfffffff;
+        visited[i] = false;
+        tollway_used[i] = false;
     }
 
     return;
 }
 
-void find_exit(int y, int x, bool tollway_used)
+void get_input()
 {
-    if (0 || visited[y][x])
+    int i, u, v, w, toll;
+
+    cin >> n >> m;
+    init();
+
+    for (i=0; i<m; i++)
     {
-        return;
+        cin >> u >> v >> w >> toll;
+        u--; v--;
+        tollway[u].push_back(toll==1);
+        tollway[v].push_back(toll==1);
+        adj[u].push_back(make_pair(v, w));
+        adj[v].push_back(make_pair(u, w));
     }
-    if (1)
+
+    return;
+}
+
+void dijkstra(int start, int end)
+{
+    int i;
+    int u, v, w;
+    priority_queue <pair<int, int>, vector<pair<int, int> >, greater<pair<int, int> > > pq;
+    
+    cost[start] = 0;
+    pq.push(make_pair(0, start));
+
+    while (!pq.empty())
     {
-        if (tollway_used)
+        u = pq.top().second;
+        pq.pop();
+        tollway_used[u] = false;
+        
+        if (visited[u])
         {
-            return;
+            continue;
         }
-        else
+        
+        visited[u] = true;
+        
+        if (u == end) 
         {
-            tollway_used = true;
+            break;
+        }
+        
+        for (i=0; i<adj[u].size(); i++)
+        {
+            v = adj[u][i].first;
+            w = adj[u][i].second;
+
+            if (tollway[u][v] && tollway_used[u])
+            {
+                continue;
+            }
+            if (cost[u]+w < cost[v])
+            {
+                cost[v] = cost[u] + w; 
+                pq.push(make_pair(cost[v], v));
+                // tollway_used[v] = tollway[u][v] || tollway_used[u];
+                cout << u+1 << ' ' << v+1 << ' ' << tollway[u][i] << ' ' << tollway_used[u] << endl;
+            }
         }
     }
 
-    visited[y][x] = true;
-
-    find_exit(y+1, x, tollway_used);
-    find_exit(y-1, x, tollway_used);
-    find_exit(y, x+1, tollway_used);
-    find_exit(y, x-1, tollway_used);
+    // for (i=0; i<n; i++)
+    // {
+    //     for (int j=0; j<tollway[i].size(); j++)
+    //     {
+    //         cout << i+1 << ' ' << (adj[i][j].first+1) << ' ' << tollway_used[i] << endl;
+    //     }
+    // }
 
     return;
 }
