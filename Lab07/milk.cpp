@@ -22,9 +22,12 @@ int main(void)
 
     cin >> n >> m;
 
+    init();
+
     for (i=0; i<m; i++)
     {
         cin >> command >> u >> v;
+        u--; v--;
 
         switch (command)
         {
@@ -58,13 +61,9 @@ void init()
 
 int find(int u)
 {
-    if (parent[u] == u)
-    {
-        return u;
-    }
-    parent[u] = find(parent[u]);
+    int p = parent[u];
 
-    return parent[u];
+    return p==u ? u : parent[u]=find(p);
 }
 
 void union_tree(int u, int v)
