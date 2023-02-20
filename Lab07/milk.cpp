@@ -9,7 +9,6 @@ const int MAX_M = 200001;
 int n, m;
 int parent[MAX_N];
 int p_size[MAX_N];
-int edge[MAX_M][2];
 
 void init();
 int find(int u);
@@ -17,6 +16,9 @@ void union_tree(int u, int v);
 
 int main(void)
 {
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
     int u, v, i;
     char command;
 
