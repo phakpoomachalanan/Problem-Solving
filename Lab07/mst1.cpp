@@ -4,8 +4,8 @@
 
 using namespace std;
 
-const int MAX_N = 100001;
-const int MAX_M = 200001;
+const int MAX_N = 1001;
+const int MAX_M = 100001;
 
 int n, m;
 int parent[MAX_N];
