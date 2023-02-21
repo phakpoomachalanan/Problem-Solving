@@ -30,44 +30,26 @@ void read_input()
 {
     int i, j, e, result;
     int u, v, w;
+    int all_par;
     bool status;
 
     cin >> n >> m;
-    for (i=0; i<n; i++)
-    {
-        parent[i] = i;
-        p_size[i] = 1;
-        visited[i] = false;
-    }
     for (i=0; i<m; i++)
     {
         result = 0;
         status = false;
+        for (j=0; j<n; j++)
+        {
+            parent[j] = j;
+            p_size[j] = 1;
+        }
 
         cin >> u >> v >> w;
         u--; v--;
 
         edge[i][0] = u;
         edge[i][1] = v;
-        sorted_edge.insert(make_pair(w, i));
-        visited[u] = true;
-        visited[v] = true;        
-
-        for (j=0; j<n; j++)
-        {
-            parent[j] = j;
-            p_size[j] = 1;
-            if (!status && !visited[j])
-            {
-                status = true;
-            }
-        }
-
-        if (status)
-        {
-            cout << "-1\n";
-            continue;
-        }
+        sorted_edge.insert(make_pair(w, i));  
 
         for (auto k: sorted_edge)
         {
@@ -81,6 +63,22 @@ void read_input()
                 result += k.first;
             }
         }
+
+        all_par = find(u);
+        for (j=0; j<n; j++)
+        {
+            if (all_par != find(j))
+            {
+                status = true;
+            }
+        }
+
+        if (status)
+        {
+            cout << "-1\n";
+            continue;
+        }
+
         cout << result << '\n';
 
     }
