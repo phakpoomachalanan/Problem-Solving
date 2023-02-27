@@ -5,7 +5,7 @@ using namespace std;
 
 const int MAX_N = 100001;
 
-int n=0;
+int n, m;
 int in_deg[MAX_N];
 int out_deg[MAX_N];
 bool can;
@@ -17,36 +17,50 @@ void init();
 void read_input();
 void topo_order();
 
-int main()
+int main(void)
 {
     int i;
 
-    read_input();
-    topo_order();
 
-    if (can)
+    while (true)
     {
-        for (i=0; i<n-1; i++)
+        cin >> n >> m;
+
+        if (n==0 && m==0)
         {
-            cout << output[i] + 1 << ' ';
+            break;
         }
-        cout << output[n-1] + 1 << '\n';
+        init();
+        read_input();
+        topo_order();
+
+        if (can)
+        {
+            for (i=0; i<m-1; i++)
+            {
+                cout << output[i] + 1 << ' ';
+            }
+            cout << output[n-1] + 1 << '\n';
+        }
+        else
+        {
+            cout << "no\n";
+        }
     }
-    else
-    {
-        cout << "no\n";
-    }
+
+    return 0;
 }
 
 void init()
 {
     int i;
 
-    for (i=0; i<n; i++)
+    for (i=0; i<m; i++)
     {
         in_deg[i] = 0;
         out_deg[i] = 0;
         visited[i] = false;
+        adj[i].clear();
     }
 
     can = true;
@@ -58,21 +72,14 @@ void read_input()
 
     init();
 
-    do
+    for (i=0; i<m; i++)
     {
         cin >> u >> v;
-        if (u==0 && v==0)
-        {
-            break;
-        }
-        u--;
-        v--;
+        u--; v--;
         adj[u].push_back(v);
         in_deg[v]++;
         out_deg[u]++;
-        n++;
     }
-    while (true);
 }
 
 void topo_order()
