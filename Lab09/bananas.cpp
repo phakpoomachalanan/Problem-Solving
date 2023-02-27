@@ -1,33 +1,44 @@
 #include <iostream>
-#include <vector>
+#include <algorithm>
+
+const int MAX_N = 100001;
 
 using namespace std;
 
 int n;
-vector<int> bananas;
-vector<int> max_b;
+int bananas[MAX_N];
+int max_b[MAX_N];
 
 void get_input();
 
 int main(void)
 {
-
+    int* ptr = max_b;
 
     get_input();
+
+    max_b[0] = 0;
+    max_b[1] = 0;
+    max_b[2] = bananas[2];
+
+    for (int i=3; i<n; i++)
+    {
+        ptr = max_element(ptr, &max_b[i-2]);
+        max_b[i] = bananas[i] + *ptr;
+    }
+
+    cout << *max_element(&max_b[n-6], &max_b[n-1]) << '\n';
 
     return 0;
 }
 
 void get_input()
 {
-    int temp;
-
     cin >> n;
 
     for (int i=0; i<n; i++)
     {
-        cin >> temp;
-        bananas.push_back(temp);
+        cin >> bananas[i];
     }
 
     return;
