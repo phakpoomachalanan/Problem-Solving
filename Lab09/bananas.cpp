@@ -27,7 +27,7 @@ int main(void)
         max_b[i] = bananas[i] + *ptr;
     }
 
-    cout << *max_element(&max_b[n-6], &max_b[n-1]) << '\n';
+    cout << *max_element(ptr, max_b+n) << '\n';
 
     return 0;
 }

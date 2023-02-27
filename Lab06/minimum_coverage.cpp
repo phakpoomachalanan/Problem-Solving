@@ -42,7 +42,7 @@ int main()
 
             line.push_back(edge[j]);
 
-            for (k=0; k<edge.size(); k++)
+            for (k=j; k<edge.size(); k++)
             {
                 if (k == j)
                 {
