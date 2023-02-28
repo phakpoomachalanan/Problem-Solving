@@ -1,17 +1,14 @@
 #include <iostream>
 #include <vector>
+#include <set>
 
 using namespace std;
 
 int  n, m;
-int des_y, des_x;
-int sta_y, sta_x;
-int spe_y, spe_x;
+int start, stop;
 const int MAX_N = 51;
-int min_visa = 0xfffffff;
-bool can, all_can=false;
 int map[MAX_N][MAX_N] = {0};
-vector<int> adj[MAX_N];
+set<int> adj[MAX_N];
 bool visited[MAX_N];
 int layer[MAX_N];
 int deg[MAX_N];
@@ -22,6 +19,8 @@ void bfs(int s);
 int main(void)
 {
     int i, j, u, v, w;
+    int des_y, des_x;
+    int sta_y, sta_x;
 
     cin >> n >> m;
     cin >> sta_y >> sta_x >> des_y >> des_x;
@@ -35,32 +34,28 @@ int main(void)
         }
     }
 
+    start = map[sta_y][sta_x];
+    stop = map[des_y][des_x];
+
     for (i=0; i<n; i++)
     {
-        for (j=0; j<m-1; j++)
+        for (j=0; j<m; j++)
         {
             u = map[i][j];
             v = map[i][j+1];
-            if (u != v)
+            w = map[i+1][j];
+            if (u!=v && v!=0)
             {
-                adj[u].push_back(v);
-                adj[v].push_back(u);
-                deg[u]++;
-                deg[v]++;
+                adj[u].insert(v);
             }
-            if (i != n-1)
+            if (u!=w && w!=0)
             {
-                w = map[i+1][j];
-                if (u != w)
-                {
-                    adj[u].push_back(w);
-                    adj[w].push_back(u);
-                    deg[u]++;
-                    deg[w]++;
-                }
+                adj[u].insert(w);
             }
         }
     }
+
+    bfs(start);
 
     cout << layer[map[des_y][des_x]] << '\n';
 
@@ -69,12 +64,9 @@ int main(void)
 
 void init()
 {
-    int i, j;
-
-    can = false;
-    for (j=0; j<m; j++)
+    for (int i=0; i<m; i++)
     {
-        visited[j] = false;
+        visited[i] = false;
     }
 
     return;
@@ -84,7 +76,7 @@ void bfs(int s)
 {
     vector<int> current_layer;
     vector<int> next_layer;
-    int u, v, i;
+    int u;
 
     current_layer.push_back(s);
     visited[s] = true;
@@ -95,14 +87,17 @@ void bfs(int s)
         for (vector<int>::iterator itr=current_layer.begin(); itr!=current_layer.end(); itr++)
         {
             u = *itr;
-            for (i=0; i<deg[u]; i++)
+            for (auto v: adj[u])
             {
-                v = adj[u][i];
                 if (!visited[v])
                 {
                     next_layer.push_back(v);
                     visited[v] = true;
                     layer[v] = layer[u] + 1;
+                }
+                if (v == stop)
+                {
+                    return;
                 }
             }
         }
