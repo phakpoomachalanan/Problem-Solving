@@ -10,18 +10,25 @@ bool visited[MAX_N];
 int layer[MAX_N];
 int deg[MAX_N];
 int n, m, k;
+bool can;
 
 void get_input();
 void init();
-bool bfs(int s);
+void bfs(int s);
 
 int main(void)
 {
     int i;
 
     get_input();
-
-    if (bfs(i))
+    for (i=0; i<m; i++)
+    {
+        if (!visited[i] && deg[i]<k)
+        {
+            bfs(i);
+        }
+    }
+    if (can)
     {
         cout << "yes\n";
     }
@@ -38,10 +45,10 @@ void get_input()
     int i;
     int u, v;
 
-    cin >> n >> m >> k;
+    cin >> m >> n >> k;
 
     init();
-    for (i=0; i<m; i++)
+    for (i=0; i<n; i++)
     {
         cin >> u >> v;
         u--;
@@ -49,12 +56,14 @@ void get_input()
         adj[u].push_back(v);
         adj[v].push_back(u);
         deg[u]++;
+        deg[v]++;
     }
 }
 
 void init()
 {
-    for (int i=0; i<n; i++)
+    can = true;
+    for (int i=0; i<m; i++)
     {
         deg[i] = 0;
         adj[i].clear();
@@ -63,7 +72,7 @@ void init()
     }
 }
 
-bool bfs(int s)
+void bfs(int s)
 {
     vector<int> current_layer;
     vector<int> next_layer;
@@ -87,12 +96,10 @@ bool bfs(int s)
                     visited[v] = true;
                     layer[v] = layer[u] + 1;
                 }
-                else
+                else if ((layer[v]%2==layer[u]%2) && (deg[v]<k || deg[u]<k))
                 {
-                    if (layer[v]%2==layer[u]%2 && (deg[v]<k || deg[u]<k))
-                    {
-                        return false;
-                    }
+                    can = false;
+                    return;
                 }
             }
         }
@@ -104,5 +111,5 @@ bool bfs(int s)
         next_layer.clear();
     }
 
-    return true;
+    return;
 }
