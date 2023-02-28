@@ -1,11 +1,12 @@
 #include <iostream>
 #include <vector>
+#include <set>
 #include <algorithm>
 
 using namespace std;
 
 int n, m;
-vector<pair<int, int> > edge;
+set<pair<int, int> > edge;
 
 void get_input();
 
@@ -33,27 +34,31 @@ int main()
         can = false;
         min_use = 0xfffffff;
         
-        for (j=0; j<edge.size(); j++)
+        for (auto itr: edge)
         {
             can = can ? true : false;
             use = 1;
-            tail = edge[j].first;
-            head = edge[j].second;
+            tail = itr.first;
+            head = itr.second;
 
-            line.push_back(edge[j]);
+            line.push_back(itr);
 
-            for (k=j; k<edge.size(); k++)
+            for (auto it: edge)
             {
-                if (k == j)
+                if (it <= itr)
                 {
                     continue;
                 }
-                temp = edge[k].second;
+                temp = it.second;
                 if (temp == tail)
                 {
-                    tail = edge[k].first;
-                    line.push_back(edge[k]);
+                    tail = it.first;
+                    line.push_back(it);
                     use++;
+                }
+                if (tail >= m)
+                {
+                    break;
                 }
             }
             if (head<=0 && tail>=m)
@@ -113,8 +118,6 @@ void get_input()
         {
             continue;
         }
-        edge.push_back(make_pair(t2, t1));
+        edge.insert(make_pair(t2, t1));
     }
-
-    sort(edge.begin(), edge.end());
 }
