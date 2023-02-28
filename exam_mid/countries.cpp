@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <set>
 
 using namespace std;
 
@@ -8,7 +7,7 @@ int  n, m;
 int start, stop;
 const int MAX_N = 51;
 int map[MAX_N][MAX_N] = {0};
-set<int> adj[MAX_N];
+vector<int> adj[MAX_N];
 bool visited[MAX_N];
 int layer[MAX_N];
 int deg[MAX_N];
@@ -46,27 +45,33 @@ int main(void)
             w = map[i+1][j];
             if (u!=v && v!=0)
             {
-                adj[u].insert(v);
+                adj[u].push_back(v);
             }
             if (u!=w && w!=0)
             {
-                adj[u].insert(w);
+                adj[u].push_back(w);
             }
         }
     }
 
     bfs(start);
 
-    cout << layer[map[des_y][des_x]] << '\n';
+    cout << layer[stop] << '\n';
 
     return 0;
 }
 
 void init()
 {
-    for (int i=0; i<m; i++)
+    for (int i=0; i<MAX_N; i++)
     {
         visited[i] = false;
+        layer[i] = -1;
+        deg[i] = 0;
+        for (int j=0; j<MAX_N; j++)
+        {
+          map[i][j] = 0;
+        }
     }
 
     return;
@@ -94,6 +99,7 @@ void bfs(int s)
                     next_layer.push_back(v);
                     visited[v] = true;
                     layer[v] = layer[u] + 1;
+                    // cout << u << " " << v << endl;
                 }
                 if (v == stop)
                 {
