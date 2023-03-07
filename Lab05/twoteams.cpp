@@ -29,7 +29,10 @@ int main()
         cin >> u >> v;
         u--; v--;
 
-        union_tree(u, v);
+        if (breakpoint == -1)
+        {
+            union_tree(u, v);
+        }
     }
 
     cout << breakpoint << '\n';
@@ -65,11 +68,12 @@ void union_tree(int u, int v)
     {
         layer[u] = 0;
     }
-    if (breakpoint==-1 && layer[u]%2==layer[v]%2 && layer[v]!=-1)
+    if (layer[u]%2==layer[v]%2)
     {
         if (find(u) == find(v))
         {
             breakpoint = day;
+            return;
         }
     }
     layer[v] = layer[u] + 1;
