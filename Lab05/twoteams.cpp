@@ -64,7 +64,6 @@ void union_tree(int u, int v)
     if (layer[u] == -1)
     {
         layer[u] = 0;
-        // cout << u << endl;
     }
     if (breakpoint==-1 && layer[u]%2==layer[v]%2 && layer[v]!=-1)
     {
