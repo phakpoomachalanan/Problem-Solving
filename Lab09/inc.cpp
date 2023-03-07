@@ -31,7 +31,6 @@ int main(void)
             {
                 parent[i] = j;
                 max_ai = max_l[j];
-                // cout << lines[i] << " " << lines[j] << " " << max_ai << endl;
             }
         }
         max_l[i] = max_ai + 1;
@@ -51,7 +50,7 @@ int main(void)
         max_ans.insert(lines[max_in]);
         max_in = parent[max_in];
     }
-    max_ans.insert(lines[0]);
+    max_ans.insert(lines[max_in]);
 
     cout << max_ans.size() << '\n';
     for (auto itr: max_ans)
