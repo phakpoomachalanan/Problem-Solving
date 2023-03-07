@@ -22,7 +22,14 @@ int main()
     get_input();
     dijkstra(0, n-1);
 
-    cout << cost[n-1] << '\n';
+    if (visited[n-1])
+    {
+        cout << cost[n-1] << '\n';
+    }
+    else
+    {
+        cout << "-1\n";
+    }
 
     return 0;
 }
@@ -51,8 +58,8 @@ void get_input()
     {
         cin >> u >> v >> w >> toll;
         u--; v--;
-        tollway[u].push_back(toll==1);
-        tollway[v].push_back(toll==1);
+        tollway[u].push_back(toll);
+        tollway[v].push_back(toll);
         adj[u].push_back(make_pair(v, w));
         adj[v].push_back(make_pair(u, w));
     }
@@ -92,16 +99,16 @@ void dijkstra(int start, int end)
             v = adj[u][i].first;
             w = adj[u][i].second;
 
-            if (tollway[u][v] && tollway_used[u])
-            {
-                continue;
-            }
+            // if (tollway[u][v] && tollway_used[u])
+            // {
+            //     continue;
+            // }
             if (cost[u]+w < cost[v])
             {
                 cost[v] = cost[u] + w; 
                 pq.push(make_pair(cost[v], v));
                 // tollway_used[v] = tollway[u][v] || tollway_used[u];
-                cout << u+1 << ' ' << v+1 << ' ' << tollway[u][i] << ' ' << tollway_used[u] << endl;
+                // cout << u+1 << ' ' << v+1 << ' ' << tollway[u][i] << ' ' << tollway_used[u] << endl;
             }
         }
     }
