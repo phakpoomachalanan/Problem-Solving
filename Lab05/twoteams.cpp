@@ -62,8 +62,6 @@ int find(int u)
 
 void union_tree(int u, int v)
 {
-    int temp;
-
     if (layer[u] == -1)
     {
         layer[u] = 0;
@@ -81,9 +79,7 @@ void union_tree(int u, int v)
     u = find(u);
     if (p_size[u] > p_size[v])
     {
-        temp = u;
-        u = v;
-        v = temp;
+        swap(u,v);
     }
     parent[u] = v;
     p_size[v] += p_size[u];
