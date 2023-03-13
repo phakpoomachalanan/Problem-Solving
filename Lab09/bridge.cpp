@@ -19,7 +19,15 @@ int main()
 
     max_a(n-1, n-1);
 
-    cout << a[n-1][n-1] << '\n';
+    // cout << a[n-1][n-1] << '\n';
+    for (int i=0; i<n; i++)
+    {
+        for (int j=0; j<n; j++)
+        {
+            cout << a[i][j] << " ";
+        }
+        cout << endl;
+    }
 
     return 0;
 }
@@ -63,31 +71,71 @@ int max_a(int i, int j)
     int cut_r;
     int cut_lr;
 
+
     if (i<0 || j<0)
     {
         return 0;
     }
-    if (a[i][j] == -1)
+    if (a[i][j] != -1)
     {
         return a[i][j];
     }
+    // if (a[i-1][j] == -1)
+    // {
+    //     cut_l = max_a(i-1, j);
+    // }
+    // else
+    // {
+    //     cut_l = a[i-1][j];
+    // }
+    // if (a[i][j-1] == -1)
+    // {
+    //     cut_r = max_a(i, j-1);
+    // }
+    // else
+    // {
+    //     cut_r = a[i][j-1];
+    // }
 
-    cut_l = a[i-1][j]!=-1 ? max_a(i-1, j) : a[i-1][j];
-    cut_r = a[i][j-1]!=-1 ? max_a(i, j-1) : a[i][j-1];
+    cut_l = a[i-1][j]==-1 ? max_a(i-1, j) : a[i-1][j];
+    cut_r = a[i][j-1]==-1 ? max_a(i, j-1) : a[i][j-1];
 
     if (l_bridge[i] == r_bridge[j])
     {
-        cut_lr = a[i-1][j-1]!=-1 ? 1+max_a(i-1, j-1) : a[i-1][j-1];
+        cut_lr = a[i-1][j-1]==-1 ? 1+max_a(i-1, j-1) : 1+a[i-1][j-1];
+        // if (a[i-1][j-1] == -1)
+        // {
+        //     cut_lr = 1 + max_a(i-1, j-1);
+        // }
+        // else
+        // {
+        //     cut_lr = 1 + a[i-1][j-1];
+        // }
     }
     else
     {
         cut_lr = 0;
     }
 
-    return a[i][j] = max(cut_l, cut_r, cut_lr);
+    cout << i << " " << j << endl;
+    cout << cut_l << " " << cut_r << " " << cut_lr << endl;
+
+    a[i][j] = max(cut_l, cut_r, cut_lr);
+
+    return a[i][j];
 }
 
 int max(int a, int b, int c)
 {
+    // if (a>b && a>c)
+    // {
+    //     return a;
+    // }
+    // if (b>a && b>c)
+    // {
+    //     return b;
+    // }
+    // return c;
+
     return a>b ? a>c ? a : c : b>c ? b : c;
 }
