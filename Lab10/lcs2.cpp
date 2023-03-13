@@ -27,7 +27,7 @@ int main()
 
     cout << A[len_s][len_r] << '\n';
 
-    while (i>0 || j>0)
+    while (i>0 && j>0)
     {
         if (B[i][j] == 0)
         {
