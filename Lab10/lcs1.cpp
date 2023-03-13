@@ -5,7 +5,6 @@ using namespace std;
 const int MAX_N = 202;
 string s, r;
 int A[MAX_N][MAX_N];
-int B[MAX_N][MAX_N];
 int len_s, len_r;
 
 void get_input();
