@@ -39,6 +39,10 @@ int main()
         }
         else if (B[i][j] == 2)
         {
+            if (A[i][j] == A[i-1][j-1]+1)
+            {
+
+            }
             output.push_front(s[i-1]);
             i--; j--;
         }
@@ -112,9 +116,9 @@ int max_a(int i, int j)
 
 int max_three(int a, int b, int c, int i, int j)
 {
-    if (a > b)
+    if (a >= b)
     {
-        if (a > c)
+        if (a >= c)
         {
             B[i][j] = 0;
             return a;
@@ -125,7 +129,7 @@ int max_three(int a, int b, int c, int i, int j)
             return c;
         }
     }
-    else if (b > c)
+    else if (b >= c)
     {
         B[i][j] = 1;
         return b;
