@@ -39,10 +39,6 @@ int main()
         }
         else if (B[i][j] == 2)
         {
-            if (A[i][j] == A[i-1][j-1]+1)
-            {
-
-            }
             output.push_front(s[i-1]);
             i--; j--;
         }
