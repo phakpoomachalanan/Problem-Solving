@@ -2,16 +2,17 @@
 
 using namespace std;
 
+
 const int MAX_N = 3001;
-int s[MAX_N];
-int r[MAX_N];
-int A[MAX_N][MAX_N];
-int n;
+short int *s = new short int[MAX_N];
+short int *r = new short int[MAX_N];
+short int **A = new short int*[MAX_N];
+short int n;
 
 void get_input();
 void init();
-int max_a(int i, int j);
-int max_three(int a, int b, int c);
+short int max_a(short int i, short int j);
+short int max_three(short int a, short int b, short int c);
 
 int main()
 {
@@ -26,7 +27,7 @@ int main()
 
 void get_input()
 {
-    int i;
+    short int i;
 
     cin >> n;
 
@@ -46,24 +47,25 @@ void get_input()
 
 void init()
 {
-    int i, j;
+    short int i, j;
 
-    for (i=0; i<n; i++)
+    for (i=0; i<MAX_N; i++)
     {
         s[i] = 0;
         r[i] = 0;
-        for (j=0; j<n; j++)
+        A[i] = new short int[MAX_N];
+        for (j=0; j<MAX_N; j++)
         {
             A[i][j] = -1;
         }
     }
 }
 
-int max_a(int i, int j)
+short int max_a(short int i, short int j)
 {
-    int cut_l;
-    int cut_r;
-    int cut_lr;
+    short int cut_l;
+    short int cut_r;
+    short int cut_lr;
 
     if (i<=0 || j<=0)
     {
@@ -91,7 +93,7 @@ int max_a(int i, int j)
     return A[i][j];
 }
 
-int max_three(int a, int b, int c)
+short int max_three(short int a, short int b, short int c)
 {
     return a>b ? a>c ? a : c : b>c ? b : c;
 }
