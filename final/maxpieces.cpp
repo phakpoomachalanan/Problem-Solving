@@ -47,7 +47,7 @@ int main()
                 break;
             }
         }
-        print_output(q, sum_lower, low_i);
+        print_output(q, 0, 0);
     }
 
     return 0;
@@ -55,7 +55,7 @@ int main()
 
 void get_input()
 {
-    int i, j, temp;
+    int i, temp;
 
     cin >> n >> m;
 
@@ -87,8 +87,8 @@ void print_output(int q, int minus, int min_i)
         }
     }
 
-    output = output>min_i ? output-min_i : 0;
-    
+    // output = output>min_i ? output-min_i : 0;
+
     cout << output << '\n';
 
     return;
