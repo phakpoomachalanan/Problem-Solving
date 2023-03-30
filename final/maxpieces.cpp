@@ -15,12 +15,13 @@ int min_price[MAX_N];
 void get_input();
 void init();
 void print_output(int q, int minus, int min_i);
+int binary_search(vector<int> table, int l, int r, int x);
 
 int main()
 {
     int i, q;
     int min_y;
-    int sum_lower;
+    int sum_low;
     int low_i;
 
     get_input();
@@ -33,21 +34,25 @@ int main()
     for (q=0; q<m; q++)
     {
         min_y = question[q][1];
-        sum_lower = 0;
-        low_i = 0;
-        for (i=0; i<n; i++)
+
+        table.push_back(min_y);
+        sort(table.begin(), table.end());
+
+        low_i = binary_search(table, 0, n, min_y);
+        cout <<"i : " << low_i << endl;
+        table.erase(table.begin()+low_i);
+        if (low_i == 0)
         {
-            if (table[i] < min_y)
-            {
-                sum_lower += table[i];
-                low_i++;
-            }
-            else
-            {
-                break;
-            }
+            low_i = 0;
+            sum_low = 0;
         }
-        print_output(q, 0, 0);
+        else
+        {
+            low_i--;
+            sum_low = min_price[low_i];
+        }
+
+        print_output(q, sum_low, low_i);
     }
 
     return 0;
@@ -77,7 +82,6 @@ void print_output(int q, int minus, int min_i)
 {
     int i, output = 0;
     int max_q = question[q][0];
-    int min_y = question[q][1];
 
     for (i=min_i; i<n; i++)
     {
@@ -86,10 +90,41 @@ void print_output(int q, int minus, int min_i)
             output = max_piece[i];
         }
     }
+    if (question[q][1] == table[0])
+    {
+        min_i++;
+    }
 
-    // output = output>min_i ? output-min_i : 0;
-
-    cout << output << '\n';
+    cout << output-min_i << '\n';
 
     return;
 }
+
+int binary_search(vector<int> table, int l, int r, int x)
+{
+    int mid;
+
+    if (r >= l)
+    {
+        mid = l + (r-l) / 2;
+ 
+        if (table[mid] == x)
+        {
+            return mid;
+        }
+ 
+        if (table[mid] > x)
+        {
+            return binary_search(table, l, mid - 1, x);
+        }
+ 
+        return binary_search(table, mid + 1, r, x);
+    }
+
+    return -1;
+}
+
+    // int table[] = { 2, 3, 4, 10, 40 };
+    // int x = 10;
+    // int n = sizeof(table) / sizeof(table[0]);
+    // int result = binary_search(table, 0, n - 1, x);
