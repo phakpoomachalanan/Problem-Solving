@@ -14,32 +14,40 @@ int min_price[MAX_N];
 
 void get_input();
 void init();
-void print_output(int q);
+void print_output(int q, int minus, int min_i);
 
 int main()
 {
-    int i, j, q;
+    int i, q;
     int min_y;
+    int sum_lower;
+    int low_i;
 
     get_input();
     
+    for (i=0; i<n; i++)
+    {
+        max_piece[i] = i+1;
+        min_price[i] += i==0 ? table[i] : min_price[i-1]+table[i];
+    }
     for (q=0; q<m; q++)
     {
-        i = 0;
-        j = 0;
-        init();
         min_y = question[q][1];
+        sum_lower = 0;
+        low_i = 0;
         for (i=0; i<n; i++)
         {
             if (table[i] < min_y)
             {
-                continue;
+                sum_lower += table[i];
+                low_i++;
             }
-            max_piece[i] = j+1;
-            min_price[i] += i==0 ? table[i] : min_price[i-1]+table[i];
-            j++;
+            else
+            {
+                break;
+            }
         }
-        print_output(q);
+        print_output(q, sum_lower, low_i);
     }
 
     return 0;
@@ -65,33 +73,21 @@ void get_input()
     return;
 }
 
-void init()
-{
-    int i;
-
-    for (i=0; i<n; i++)
-    {
-        min_price[i] = 0;
-        max_piece[i] = 0;
-    }
-
-    return;
-}
-
-void print_output(int q)
+void print_output(int q, int minus, int min_i)
 {
     int i, output = 0;
     int max_q = question[q][0];
     int min_y = question[q][1];
-    int y = 0;
 
-    for (i=0; i<n; i++)
+    for (i=min_i; i<n; i++)
     {
-        if (min_price[i]<=max_q)
+        if (min_price[i]-minus<=max_q)
         {
             output = max_piece[i];
         }
     }
+
+    output = output>min_i ? output-min_i : 0;
     
     cout << output << '\n';
 
