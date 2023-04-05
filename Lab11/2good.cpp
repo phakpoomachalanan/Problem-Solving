@@ -45,8 +45,8 @@ void get_input()
 
 void compare()
 {
-    int lowest_cost = 0xfffffff;
-    int sum;
+    double lowest_cost = 0xfffffff;
+    double sum;
     int i, j;
 
     for (i=0; i<n; i++)
